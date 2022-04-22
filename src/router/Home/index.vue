@@ -1,0 +1,599 @@
+<template>
+  <div class="main">
+    <!-- banner模块 start -->
+    <banner class="banner">
+      <div class="w">
+        <div class="bannerImgs">
+          <ul>
+            <li>
+              <a href="#"><img src="./images/banner1.jpg" /></a>
+            </li>
+            <li>
+              <a href="#"><img src="./images/banner2.png" /></a>
+            </li>
+            <li>
+              <a href="#"><img src="./images/banner3.jpg" /></a>
+            </li>
+            <li>
+              <a href="#"><img src="./images/banner4.jpg" /></a>
+            </li>
+            <li>
+              <a href="#"><img src="./images/banner5.jpg" /></a>
+            </li>
+            <li>
+              <a href="#"><img src="./images/banner6.jpg" /></a>
+            </li>
+            <li>
+              <a href="#"><img src="./images/banner7.jpg" /></a>
+            </li>
+            <li>
+              <a href="#"><img src="./images/banner8.jpg" /></a>
+            </li>
+          </ul>
+          <a href="#" class="btnLeft"></a>
+          <a href="#" class="btnRight"></a>
+        </div>
+        <div class="bannerFour">
+          <ul>
+            <li>
+              <a href="#">
+                <img src="./images/four1.png" />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="./images/four2.jpg" />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="./images/four3.png" />
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <img src="./images/four4.png" />
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="bannerRight">
+          <div class="topBox">
+            <div class="userImg">
+              <a href="#">
+                <img src="" />
+              </a>
+            </div>
+            <div class="notLogin">
+              <div class="btnGroup">
+                <p class="hi">Hi，欢迎来到苏宁易购</p>
+                <a href="#">登录</a>
+                <i>|</i>
+                <a href="#">注册</a>
+              </div>
+              <a href="#">199新人专享</a>
+              <a href="#">开通super尊享特权</a>
+            </div>
+            <div class="threeEntry">
+              <a href="#"><img src="./images/box1.png" alt="" />领红包</a>
+              <a href="#"><img src="./images/box2.png" alt="" />领云钻</a>
+              <a href="#"><img src="./images/box3.png" alt="" />抢神券</a>
+            </div>
+          </div>
+          <div class="botBox">
+            <ul>
+              <li>
+                <a href="#"><img src="./images/box4.png" alt="" />话费充值</a>
+              </li>
+              <li>
+                <a href="#"><img src="./images/box5.png" alt="" />水电煤</a>
+              </li>
+              <li>
+                <a href="#"><img src="./images/box6.png" alt="" />苏宁卡</a>
+              </li>
+              <li>
+                <a href="#"><img src="./images/box7.png" alt="" />理财</a>
+              </li>
+              <li>
+                <a href="#"><img src="./images/box8.png" alt="" />分期</a>
+              </li>
+              <li>
+                <a href="#"><img src="./images/box9.png" alt="" />苏宁公益</a>
+              </li>
+              <li>
+                <a href="#"><img src="./images/box10.png" alt="" />加油卡</a>
+              </li>
+              <li>
+                <a href="#"><img src="./images/box11.png" alt="" />以旧换新</a>
+              </li>
+              <li>
+                <a href="#"><img src="./images/box12.png" alt="" />保险</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </banner>
+    <!-- banner模块 end -->
+
+    <!-- floatBar 模块 start -->
+    <div class="floatBar">
+      <ul>
+        <li class="active">限时秒杀</li>
+        <li>领券中心</li>
+        <li>直播拼购</li>
+        <li>频道广场</li>
+        <li>猜你喜欢</li>
+      </ul>
+      <a href="#">顶部</a>
+      <a href="#">暴恐举报</a>
+    </div>
+    <!-- floatBar 模块 end -->
+
+    <!-- 推荐模块 start -->
+    <div class="recoms w">
+      <div class="recom">
+        <p>限时秒杀</p>
+        <div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+        </div>
+      </div>
+      <div class="recom">
+        <p>大聚惠</p>
+        <div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+        </div>
+      </div>
+      <div class="recom">
+        <p>领券中心</p>
+        <div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+        </div>
+      </div>
+      <div class="recom">
+        <p>推荐榜单</p>
+        <div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+        </div>
+      </div>
+      <div class="recom">
+        <p>苏宁直播</p>
+        <div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+        </div>
+      </div>
+      <div class="recom">
+        <p>苏宁拼购</p>
+        <div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+          <div>
+            <img src="./images/goods.jpg" alt="" />
+            <h1>昕昕卫生间纸巾盒厕纸置物架</h1>
+            <h2><i>&yen;</i><em>9.90</em><i>&yen;</i><em>19.90</em></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 推荐模块 end -->
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Home",
+};
+</script>
+
+<style scoped>
+@media screen and (max-width: 1200px) {
+  .banner .bannerRight {
+    display: none;
+  }
+}
+
+/* banner模块 */
+.main {
+  background-color: #f2f2f2;
+}
+
+.banner {
+  display: block;
+  width: 100%;
+  height: 476px;
+  background-color: #f91d25;
+}
+
+.banner .w {
+  position: relative;
+  height: 476px;
+}
+
+/* banenr 图 */
+.bannerImgs {
+  position: absolute;
+  top: 0;
+  left: 200px;
+}
+
+/* banner 图区域 */
+.bannerFour {
+  position: absolute;
+  bottom: 5px;
+  left: 204px;
+  height: 112px;
+  width: 786px;
+}
+
+.bannerFour ul {
+  display: flex;
+  justify-content: space-around;
+}
+
+.bannerFour li {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bannerFour a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.bannerFour img {
+  height: 112px;
+  flex: 1;
+}
+
+.bannerRight {
+  position: absolute;
+  top: 0;
+  left: 994px;
+  width: 196px;
+  height: 476px;
+  background-color: #fff;
+  pointer-events: auto;
+}
+
+.topBox {
+  height: 225px;
+  width: 196px;
+  position: relative;
+}
+
+.userImg {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 48px;
+  height: 48px;
+}
+
+.userImg img {
+  width: 100%;
+  height: 100%;
+}
+
+.notLogin {
+  width: 196px;
+  height: 140px;
+  overflow: hidden;
+}
+
+.btnGroup {
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  line-height: 12px;
+  font-size: 12px;
+}
+
+.btnGroup p {
+  display: block;
+  height: 22px;
+}
+
+.btnGroup p,
+.btnGroup a,
+.btnGroup i {
+  color: #333;
+}
+
+.btnGroup a:hover {
+  color: #f60;
+}
+
+.notLogin > a {
+  display: block;
+  width: 156px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.notLogin > a:nth-child(2) {
+  color: #fff;
+  background-color: #ff8000;
+  margin: 70px 20px 0 20px;
+}
+
+.notLogin > a:last-child {
+  color: #fada99;
+  background-color: #19145c;
+  margin: 10px 20px 0 20px;
+}
+
+.threeEntry {
+  height: 85px;
+  width: 196px;
+  color: #333;
+  font-size: 14px;
+  display: flex;
+}
+
+.threeEntry a {
+  display: block;
+  flex: 1;
+  text-align: center;
+}
+
+.threeEntry a:hover {
+  color: #f60;
+}
+
+.threeEntry img {
+  width: 36px;
+  height: 36px;
+  display: block;
+  margin: 6px auto;
+}
+
+.botBox {
+  display: flex;
+  width: 196px;
+  height: 251px;
+}
+
+.botBox ul {
+  display: flex;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.botBox ul li {
+  width: 33.33%;
+}
+
+.botBox ul li:hover {
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.08), 0 6px 20px 0 rgba(0, 0, 0, 0.05);
+  margin-top: -3px;
+}
+
+.botBox img {
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: 12px auto;
+}
+
+.botBox a {
+  color: #333;
+  font-size: 14px;
+}
+
+.botBox ul li:hover a {
+  color: #f60;
+}
+
+/* floatBar 浮动模块 */
+.floatBar {
+  position: fixed;
+  top: 50%;
+  left: 90px;
+  margin-top: -106px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  width: 70px;
+  height: 212px;
+  padding-top: 9px;
+  font-size: 12px;
+  color: #333;
+}
+
+.floatBar li {
+  width: 68px;
+  height: 29px;
+  border-bottom: 1px solid #e8e8e8;
+  text-align: center;
+  line-height: 28px;
+  cursor: pointer;
+}
+
+.floatBar li.active {
+  color: #fff;
+  background-color: #f60;
+}
+
+.floatBar a {
+  display: block;
+  width: 68px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+}
+
+.floatBar a:hover {
+  color: #f60;
+}
+
+.floatBar a:nth-child(2) {
+  color: #f60;
+}
+
+/* 推荐模块 */
+.recoms {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.recom {
+  width: 590px;
+  background-color: #fff;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+.recom p {
+  display: inline-block;
+  height: 60px;
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+  text-align: start;
+  padding: 10px 0 0 16px;
+}
+
+.recom p:hover {
+  cursor: pointer;
+  color: #f60;
+}
+
+.recom > div {
+  display: flex;
+}
+
+.recom > div div {
+  padding: 0 10px;
+}
+
+.recom > div div:hover {
+  cursor: pointer;
+}
+
+.recom > div div:hover h1 {
+  color: #f60;
+}
+
+.recom > div h1 {
+  font-size: 14px;
+  color: #333;
+  font-weight: normal;
+  display: block;
+  overflow: hidden;
+  height: 20px;
+  line-height: 20px;
+}
+
+.recom > div h2 {
+  font-size: 12px;
+  color: #999;
+  font-weight: normal;
+  margin: 4px;
+}
+
+.recom img {
+  display: block;
+  width: 150px;
+  margin: 0 auto 10px;
+}
+
+.recom > div h2 i:first-child {
+  color: #f30;
+  font-weight: bold;
+}
+
+.recom > div h2 em:nth-child(2) {
+  color: #f30;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.recom > div h2 i:nth-child(3),
+.recom > div h2 em:last-child {
+  text-decoration: line-through;
+}
+</style>
