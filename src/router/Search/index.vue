@@ -8,26 +8,48 @@
         </li>
       </ul>
       <ul class="fl sui-tag">
-        <li class="with-x">手机</li>
-        <li class="with-x">iphone<i>×</i></li>
-        <li class="with-x">华为<i>×</i></li>
-        <li class="with-x">OPPO<i>×</i></li>
+        <li class="with-x" v-if="searchParams.categoryName">
+          {{ searchParams.categoryName }}<i @click="removeName">×</i>
+        </li>
+        <li class="with-x" v-if="searchParams.keyword">
+          {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+        </li>
+        <li class="with-x" v-if="searchParams.trademark">
+          {{ searchParams.trademark.split(":")[1] }}<i @click="removeTm">×</i>
+        </li>
+        <li
+          class="with-x"
+          v-for="(attr, index) in searchParams.props"
+          :key="index"
+        >
+          {{ attr.split(":")[1] }}<i @click="removeAttr(index)">×</i>
+        </li>
       </ul>
     </div>
 
     <!--selector-->
-    <SearchSelector />
+    <SearchSelector @tmInfo="tmInfo" @attrInfo="attrInfo" />
 
     <!--details-->
     <div class="details clearfix">
       <div class="sui-navbar">
         <div class="navbar-inner filter">
           <ul class="sui-nav">
-            <li class="active">
-              <a href="#">综合⬇</a>
+            <li :class="{ active: isOne }" @click="changeOrder(1)">
+              <a
+                >综合<span v-show="isOne"
+                  ><span v-show="isDesc">⬇</span
+                  ><span v-show="!isDesc">⬆</span></span
+                ></a
+              >
             </li>
-            <li>
-              <a href="#">价格⬆</a>
+            <li :class="{ active: !isOne }" @click="changeOrder(2)">
+              <a
+                >价格<span v-show="!isOne"
+                  ><span v-show="isDesc">⬇</span
+                  ><span v-show="!isDesc">⬆</span></span
+                ></a
+              >
             </li>
           </ul>
         </div>
@@ -71,42 +93,20 @@
           </li>
         </ul>
       </div>
-      <div class="fr page">
-        <div class="sui-pagination clearfix">
-          <ul>
-            <li class="prev disabled">
-              <a href="#">«上一页</a>
-            </li>
-            <li class="active">
-              <a href="#">1</a>
-            </li>
-            <li>
-              <a href="#">2</a>
-            </li>
-            <li>
-              <a href="#">3</a>
-            </li>
-            <li>
-              <a href="#">4</a>
-            </li>
-            <li>
-              <a href="#">5</a>
-            </li>
-            <li class="dotted"><span>...</span></li>
-            <li class="next">
-              <a href="#">下一页»</a>
-            </li>
-          </ul>
-          <div><span>共10页&nbsp;</span></div>
-        </div>
-      </div>
+      <Pagination
+        :pageNo="searchParams.pageNo"
+        :pageSize="searchParams.pageSize"
+        :total="total"
+        :continues="5"
+        @getPageNo="getPageNo"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "Search",
   components: {
@@ -132,12 +132,86 @@ export default {
     getData() {
       this.$store.dispatch("getSearchInfo", this.searchParams);
     },
+    removeName() {
+      this.searchParams.categoryName = undefined;
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      this.getData();
+      //但貌似还是把query参数全干掉了
+      if (this.$route.params) {
+        this.$router.push({ name: "Search", params: this.$route.params });
+      }
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.getData();
+      if (this.$route.query) {
+        this.$router.push({ name: "Search", query: this.$route.query });
+      }
+    },
+    removeTm() {
+      this.searchParams.trademark = undefined;
+      this.getData();
+    },
+    removeAttr(i) {
+      this.searchParams.props.splice(i, 1);
+      this.getData();
+    },
+    tmInfo(tm) {
+      this.searchParams.trademark = `${tm.tmId}:${tm.tmName}`;
+      this.getData();
+    },
+    attrInfo(attr, v) {
+      let prop = `${attr.attrId}:${v}:${attr.attrName}`;
+      if (this.searchParams.props.indexOf(prop) == -1) {
+        this.searchParams.props.push(prop);
+        this.getData();
+      }
+    },
+    changeOrder(flag) {
+      let originFlag = this.searchParams.order.split(":")[0];
+      let originSort = this.searchParams.order.split(":")[1];
+      if (originFlag == flag) {
+        this.searchParams.order = `${flag}:${
+          originSort == "desc" ? "asc" : "desc"
+        }`;
+      } else {
+        this.searchParams.order = `${flag}:desc`;
+      }
+      this.getData();
+    },
+    getPageNo(pageNo) {
+      this.searchParams.pageNo = pageNo;
+      this.getData();
+    },
   },
   computed: {
-    ...mapGetters(["goodsList", "trademarkList", "attrsList"]),
+    ...mapGetters(["goodsList"]),
+    ...mapState({
+      total: (state) => state.Search.searchInfo.total,
+    }),
+    isOne() {
+      return this.searchParams.order.indexOf("1") != -1;
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf("desc") != -1;
+    },
+  },
+  beforeMount() {
+    Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
     this.getData();
+  },
+  watch: {
+    $route(newv, oldv) {
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      Object.assign(this.searchParams, this.$route.query, this.$route.params);
+      this.getData();
+    },
   },
 };
 </script>
@@ -226,6 +300,7 @@ export default {
   padding: 11px 15px 5px;
   color: #777;
   text-decoration: none;
+  font-size: 14px;
 }
 .sui-nav li.active a {
   color: #f60;
@@ -344,72 +419,5 @@ export default {
 .btn-danger:hover {
   background-color: #fff6e5;
   color: #f60 !important;
-}
-
-.page {
-  width: 733px;
-  height: 66px;
-  overflow: hidden;
-  float: right;
-}
-.sui-pagination {
-  margin: 18px 0;
-}
-.sui-pagination ul {
-  margin-left: 0;
-  margin-bottom: 0;
-  vertical-align: middle;
-  width: 490px;
-  float: left;
-}
-.sui-pagination ul li {
-  line-height: 18px;
-  display: inline-block;
-}
-.sui-pagination ul li a {
-  position: relative;
-  float: left;
-  line-height: 18px;
-  text-decoration: none;
-  background-color: #fff;
-  border: 1px solid #e0e9ee;
-  margin-left: -1px;
-  font-size: 14px;
-  padding: 9px 18px;
-  color: #333;
-}
-.sui-pagination ul li.active a {
-  background-color: #fff;
-  color: #e1251b;
-  border-color: #fff;
-  cursor: default;
-}
-.sui-pagination ul li.prev a {
-  background-color: #fafafa;
-}
-.sui-pagination ul li.disabled a {
-  color: #999;
-  cursor: default;
-}
-.sui-pagination ul li.dotted span {
-  margin-left: -1px;
-  position: relative;
-  float: left;
-  line-height: 18px;
-  text-decoration: none;
-  background-color: #fff;
-  font-size: 14px;
-  border: 0;
-  padding: 9px 18px;
-  color: #333;
-}
-.sui-pagination ul li.next a {
-  background-color: #fafafa;
-}
-.sui-pagination div {
-  color: #333;
-  font-size: 14px;
-  float: right;
-  width: 241px;
 }
 </style>
