@@ -1,37 +1,21 @@
 <template>
   <div class="main">
     <!-- banner模块 start -->
-    <banner class="banner">
+    <div class="banner" :style="{ background: bannerColor }">
       <div class="w">
-        <div class="bannerImgs">
-          <ul>
-            <li>
-              <a href="#"><img src="./images/banner1.jpg" /></a>
-            </li>
-            <li>
-              <a href="#"><img src="./images/banner2.png" /></a>
-            </li>
-            <li>
-              <a href="#"><img src="./images/banner3.jpg" /></a>
-            </li>
-            <li>
-              <a href="#"><img src="./images/banner4.jpg" /></a>
-            </li>
-            <li>
-              <a href="#"><img src="./images/banner5.jpg" /></a>
-            </li>
-            <li>
-              <a href="#"><img src="./images/banner6.jpg" /></a>
-            </li>
-            <li>
-              <a href="#"><img src="./images/banner7.jpg" /></a>
-            </li>
-            <li>
-              <a href="#"><img src="./images/banner8.jpg" /></a>
-            </li>
-          </ul>
-          <a href="#" class="btnLeft"></a>
-          <a href="#" class="btnRight"></a>
+        <div class="bannerImgs swiper-container" id="mySwiper">
+          <div class="swiper-wrapper">
+            <div
+              class="swiper-slide"
+              v-for="carousel in bannerList"
+              :key="carousel.id"
+            >
+              <img :src="carousel.imgUrl" />
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev" @click="changeColorPrev"></div>
+          <div class="swiper-button-next" @click="changeColorNext"></div>
         </div>
         <div class="bannerFour">
           <ul>
@@ -113,7 +97,7 @@
           </div>
         </div>
       </div>
-    </banner>
+    </div>
     <!-- banner模块 end -->
 
     <!-- floatBar 模块 start -->
@@ -258,8 +242,64 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import Swiper from "swiper";
 export default {
   name: "Home",
+  data() {
+    return {
+      bannerColor: "#f91d25",
+      bannerIndex: 0,
+    };
+  },
+  methods: {
+    changeColorPrev() {
+      if (this.bannerIndex <= 0) {
+        this.bannerIndex = 7;
+      } else {
+        this.bannerIndex--;
+      }
+      this.bannerColor = this.bannerList[this.bannerIndex].color;
+    },
+    changeColorNext() {
+      if (this.bannerIndex >= 7) {
+        this.bannerIndex = 0;
+      } else {
+        this.bannerIndex++;
+      }
+      this.bannerColor = this.bannerList[this.bannerIndex].color;
+    },
+  },
+  mounted() {
+    this.$store.dispatch("bannerList");
+  },
+  computed: {
+    ...mapState({
+      bannerList: (state) => state.Home.bannerList,
+    }),
+  },
+  watch: {
+    bannerList: {
+      handler(newV, oldV) {
+        this.$nextTick(() => {
+          var mySwiper = new Swiper(
+            document.querySelector(".swiper-container"),
+            {
+              effect: "fade",
+              loop: true,
+              pagination: {
+                el: ".swiper-pagination",
+              },
+              navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              },
+            }
+          );
+        });
+      },
+    },
+  },
 };
 </script>
 
@@ -279,7 +319,7 @@ export default {
   display: block;
   width: 100%;
   height: 476px;
-  background-color: #f91d25;
+  transition: all 0.2s linear;
 }
 
 .banner .w {
@@ -292,6 +332,11 @@ export default {
   position: absolute;
   top: 0;
   left: 200px;
+  width: 794px;
+}
+
+.swiper-container-horizontal > .swiper-pagination-bullets {
+  bottom: 130px;
 }
 
 /* banner 图区域 */
@@ -301,6 +346,7 @@ export default {
   left: 204px;
   height: 112px;
   width: 786px;
+  z-index: 2;
 }
 
 .bannerFour ul {
@@ -331,7 +377,6 @@ export default {
   width: 196px;
   height: 476px;
   background-color: #fff;
-  pointer-events: auto;
 }
 
 .topBox {
@@ -471,8 +516,9 @@ export default {
 .floatBar {
   position: fixed;
   top: 50%;
-  left: 90px;
+  left: 50%;
   margin-top: -106px;
+  margin-left: -670px;
   background-color: #f8f8f8;
   border: 1px solid #ddd;
   width: 70px;
@@ -480,6 +526,7 @@ export default {
   padding-top: 9px;
   font-size: 12px;
   color: #333;
+  z-index: 10;
 }
 
 .floatBar li {

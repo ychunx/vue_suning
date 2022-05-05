@@ -12,7 +12,7 @@
 <script>
 import Shortcut from "./components/Shortcut";
 import Header from "./components/Header";
-import Nav from "./components/nav";
+import Nav from "./components/Nav";
 import FooterBox from "./components/FooterBox";
 import Footer from "./components/Footer";
 export default {

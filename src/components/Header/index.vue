@@ -6,8 +6,8 @@
       </h1>
     </div>
     <form class="search">
-      <input type="search" name="" id="" />
-      <button>搜索</button>
+      <input type="search" name="" id="" v-model="keyword" />
+      <button @click.prevent="goSearch">搜索</button>
     </form>
     <div class="hotwords">
       <a href="">手机</a>
@@ -33,10 +33,24 @@
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      keyword: "",
+    };
+  },
+  methods: {
+    goSearch() {
+      let location = { name: "Search" };
+      location.query = this.$route.query || {};
+      location.params = { keyword: this.keyword || undefined };
+      this.$router.push(location);
+      this.keyword = "";
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
 /* 头部模块 */
 .header {
   position: relative;

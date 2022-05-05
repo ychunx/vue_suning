@@ -1,79 +1,39 @@
 <template>
   <nav class="nav w">
-    <div class="dropdown">
+    <div class="dropdown" @mouseenter="navShowE" @mouseleave="navShowL">
       <div class="dt">分类</div>
-      <div class="dd">
-        <ul>
-          <li>
-            <img src="./images/1.png" /><a href="#">手机</a><em>/</em
-            ><a href="#">运营商</a>
-          </li>
-          <li>
-            <img src="./images/2.png" /><a href="#">家用电器</a><em>/</em
-            ><a href="#">帮客</a>
-          </li>
-          <li>
-            <img src="./images/3.png" /><a href="#">厨卫</a><em>/</em
-            ><a href="#">生活家电</a><em>/</em><a href="#">厨具</a>
-          </li>
-          <li>
-            <img src="./images/4.png" /><a href="#">电脑办公</a><em>/</em
-            ><a href="#">相机</a>
-          </li>
-          <li>
-            <img src="./images/5.png" /><a href="#">家具</a><em>/</em
-            ><a href="#">家装</a><em>/</em><a href="#">家纺</a><em>/</em
-            ><a href="#">灯具</a>
-          </li>
-          <li>
-            <img src="./images/6.png" /><a href="#">食品</a><em>/</em
-            ><a href="#">酒水</a><em>/</em><a href="#">生鲜</a><em>/</em
-            ><a href="#">特产</a>
-          </li>
-          <li>
-            <img src="./images/7.png" /><a href="#">美妆</a><em>/</em
-            ><a href="#">个护</a><em>/</em><a href="#">清洁</a><em>/</em
-            ><a href="#">宠物</a>
-          </li>
-          <li>
-            <img src="./images/8.png" /><a href="#">母婴</a><em>/</em
-            ><a href="#">玩具</a><em>/</em><a href="#">车床</a><em>/</em
-            ><a href="#">童装</a>
-          </li>
-          <li>
-            <img src="./images/9.png" /><a href="#">运动</a><em>/</em
-            ><a href="#">户外</a><em>/</em><a href="#">内衣</a><em>/</em
-            ><a href="#">鞋靴</a>
-          </li>
-          <li>
-            <img src="./images/10.png" /><a href="#">女装</a><em>/</em
-            ><a href="#">男装</a><em>/</em><a href="#">家具</a><em>/</em
-            ><a href="#">家装</a>
-          </li>
-          <li>
-            <img src="./images/11.png" /><a href="#">箱包</a><em>/</em
-            ><a href="#">钟表</a><em>/</em><a href="#">珠宝</a><em>/</em
-            ><a href="#">艺术</a>
-          </li>
-          <li>
-            <img src="./images/12.png" /><a href="#">汽车</a><em>/</em
-            ><a href="#">电摩</a><em>/</em><a href="#">汽车用品</a>
-          </li>
-          <li>
-            <img src="./images/13.png" /><a href="#">图书</a><em>/</em
-            ><a href="#">艺术</a><em>/</em><a href="#">原版</a><em>/</em
-            ><a href="#">文学</a>
-          </li>
-          <li>
-            <img src="./images/14.png" /><a href="#">医药健康</a><em>/</em
-            ><a href="#">计生情趣</a>
-          </li>
-          <li>
-            <img src="./images/15.png" /><a href="#">理财</a><em>/</em
-            ><a href="#">分期</a><em>/</em><a href="#">便民</a>
-          </li>
-        </ul>
-      </div>
+      <transition name="sort">
+        <div class="sort" v-show="navShow">
+          <ul @click="goSearch">
+            <li v-for="c1 in categoryList" :key="c1.categoryId">
+              <!-- <img src="./images/1.png" /> -->
+              <a
+                :data-categoryName="c1.categoryName"
+                :data-category1Id="c1.categoryId"
+                >{{ c1.categoryName }}</a
+              >
+              <div>
+                <div v-for="c2 in c1.categoryChild" :key="c2.categoryId">
+                  <a
+                    :data-categoryName="c2.categoryName"
+                    :data-category2Id="c2.categoryId"
+                    >{{ c2.categoryName }}</a
+                  >
+                  <div>
+                    <a
+                      v-for="c3 in c2.categoryChild"
+                      :key="c3.categoryId"
+                      :data-categoryName="c3.categoryName"
+                      :data-category3Id="c3.categoryId"
+                      >{{ c3.categoryName }}</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </transition>
     </div>
     <div class="navitems">
       <a href=""><img src="./images/nav.png" /></a>
@@ -92,8 +52,54 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "Nav",
+  data() {
+    return {
+      navShow: true,
+    };
+  },
+  methods: {
+    navShowE() {
+      this.navShow = true;
+    },
+    navShowL() {
+      if (this.$route.path != "/home") {
+        this.navShow = false;
+      }
+    },
+    goSearch(e) {
+      let node = e.target;
+      let { categoryname, category1id, category2id, category3id } =
+        node.dataset;
+      if (categoryname) {
+        let location = { name: "Search" };
+        let query = { categoryName: categoryname };
+        if (category1id) {
+          query.category1Id = category1id;
+        } else if (category2id) {
+          query.category2Id = category2id;
+        } else {
+          query.category3Id = category3id;
+        }
+        location.query = query;
+        location.params = this.$route.params || {};
+        this.$router.push(location);
+      }
+    },
+  },
+  mounted() {
+    this.$store.dispatch("categoryList");
+    /* if (this.$route.path != "/home") {
+      this.navShow = false;
+    } */
+  },
+  computed: {
+    ...mapState({
+      categoryList: (state) => state.Home.categoryList,
+    }),
+  },
 };
 </script>
 
@@ -112,6 +118,7 @@ export default {
   width: 200px;
   background: #ff8000;
   border-radius: 12px 12px 0 0;
+  z-index: 3;
 }
 
 .dropdown .dt {
@@ -122,30 +129,37 @@ export default {
   font-size: 13px;
   font-weight: bold;
   padding-left: 34px;
-}
-
-.dropdown .dt:hover {
   cursor: pointer;
 }
 
-.dropdown .dd {
+.sort {
+  /* width: 994px; */
   width: 200px;
   height: 476px;
-  background-color: #fff;
   font-size: 14px;
-}
-
-.dd li {
-  height: 31px;
-  padding: 0 6px 0 28px;
   position: relative;
 }
 
-.dd li:hover {
-  background-color: #f3f3f3;
+.sort-enter {
+  height: 0px;
+  overflow: hidden;
 }
 
-.dd li img {
+.sort-enter-to {
+  height: 476px;
+  overflow: hidden;
+}
+
+.sort-enter-active {
+  transition: all 0.3s linear;
+}
+
+.sort li {
+  height: 31px;
+  width: 200px;
+}
+
+/* .sort li img {
   position: absolute;
   top: 7px;
   left: 6px;
@@ -153,13 +167,13 @@ export default {
   height: 16px;
 }
 
-.dd li a,
-.dd li em {
+.sort li a,
+.sort li em {
   position: relative;
   top: 2px;
-}
+} */
 
-.dd li a {
+.sort li a {
   display: inline-block;
   line-height: 29px;
   /* 字间距 */
@@ -167,12 +181,62 @@ export default {
   color: #000;
 }
 
-.dd li a:hover {
-  color: #f60;
+.sort li > a {
+  width: 200px;
+  height: 31px;
+  padding-left: 26px;
+  background-color: #fff;
 }
 
-.dd em {
+.sort li a:hover {
+  color: #f60;
+  background-color: #f3f3f3;
+  cursor: pointer;
+}
+
+.sort em {
   margin: 0 3px;
+}
+
+.sort li > div {
+  position: absolute;
+  top: 0;
+  /* left: -594px; */
+  left: 200px;
+  background-color: #f3f3f3;
+  width: 794px;
+  height: 476px;
+  display: none;
+  overflow: hidden;
+  transition: all 0.2s linear;
+}
+
+.sort li:hover > a {
+  background-color: #f3f3f3;
+}
+.sort li:hover > div {
+  display: block;
+  /* left: 200px; */
+}
+.sort li > div > div {
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.sort li > div > div > a:first-child {
+  display: block;
+  float: left;
+  width: 100px;
+  text-align: end;
+}
+
+.sort li > div a {
+  margin-right: 20px;
+}
+
+.sort li > div a + div {
+  float: right;
+  width: 674px;
 }
 
 /* 下拉菜单 end */
@@ -191,6 +255,7 @@ export default {
   color: #333;
   font-size: 15px;
   font-weight: bold;
+  transition: all 0.2s linear;
 }
 
 .navitems a:hover {
