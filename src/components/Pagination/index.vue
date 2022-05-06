@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     goPage() {
-      if (parseInt(this.pnum) > this.pagesSum) {
+      if (parseInt(this.pnum) > this.pagesSum || parseInt(this.pnum) < 1) {
         alert("请输入正确的页码！");
         return;
       }

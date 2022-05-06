@@ -89,7 +89,18 @@ export default {
       }
     },
   },
+  watch: {
+    // 跳转路由时判断nav下拉框是否展开
+    $route(newv, oldv) {
+      if (newv.path == "/home") {
+        this.navShow = true;
+      } else {
+        this.navShow = false;
+      }
+    },
+  },
   mounted() {
+    // 获取分类数据
     this.$store.dispatch("categoryList");
     /* if (this.$route.path != "/home") {
       this.navShow = false;
@@ -97,6 +108,7 @@ export default {
   },
   computed: {
     ...mapState({
+      // 获取分类数据
       categoryList: (state) => state.Home.categoryList,
     }),
   },

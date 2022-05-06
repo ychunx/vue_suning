@@ -129,9 +129,17 @@ export default {
     };
   },
   methods: {
-    getData() {
+    // 获取页面数据并展示
+    getData(pageNo) {
+      // 由于当页码大于将要请求的页码总数时，会出现空页面现象，所以要跳转回第一页
+      if (pageNo) {
+        this.searchParams.pageNo = pageNo;
+      } else {
+        this.searchParams.pageNo = 1;
+      }
       this.$store.dispatch("getSearchInfo", this.searchParams);
     },
+    // 去除分类名的面包屑
     removeName() {
       this.searchParams.categoryName = undefined;
       this.searchParams.category1Id = undefined;
@@ -143,6 +151,7 @@ export default {
         this.$router.push({ name: "Search", params: this.$route.params });
       }
     },
+    // 去除关键词params的面包屑
     removeKeyword() {
       this.searchParams.keyword = undefined;
       this.getData();
@@ -150,18 +159,22 @@ export default {
         this.$router.push({ name: "Search", query: this.$route.query });
       }
     },
+    // 去除品牌面包屑
     removeTm() {
       this.searchParams.trademark = undefined;
       this.getData();
     },
+    // 去除属性面包屑
     removeAttr(i) {
       this.searchParams.props.splice(i, 1);
       this.getData();
     },
+    // 获取品牌选择的自定义事件
     tmInfo(tm) {
       this.searchParams.trademark = `${tm.tmId}:${tm.tmName}`;
       this.getData();
     },
+    // 获取属性选择的自定义事件
     attrInfo(attr, v) {
       let prop = `${attr.attrId}:${v}:${attr.attrName}`;
       if (this.searchParams.props.indexOf(prop) == -1) {
@@ -169,6 +182,7 @@ export default {
         this.getData();
       }
     },
+    // 改变排序
     changeOrder(flag) {
       let originFlag = this.searchParams.order.split(":")[0];
       let originSort = this.searchParams.order.split(":")[1];
@@ -181,9 +195,10 @@ export default {
       }
       this.getData();
     },
+    // 获取页码器子组件改变页码数的自定义事件
     getPageNo(pageNo) {
-      this.searchParams.pageNo = pageNo;
-      this.getData();
+      // this.searchParams.pageNo = pageNo;
+      this.getData(pageNo);
     },
   },
   computed: {
@@ -191,6 +206,7 @@ export default {
     ...mapState({
       total: (state) => state.Search.searchInfo.total,
     }),
+    // 判断排序
     isOne() {
       return this.searchParams.order.indexOf("1") != -1;
     },
