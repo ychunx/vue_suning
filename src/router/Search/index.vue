@@ -35,7 +35,16 @@
       <div class="sui-navbar">
         <div class="navbar-inner filter">
           <ul class="sui-nav">
-            <li :class="{ active: isOne }" @click="changeOrder(1)">
+            <span
+              class="sui-nav-boder"
+              :class="{ 'sui-nav-boder-second': orderC }"
+            ></span>
+            <li
+              :class="{ active: isOne }"
+              @click="changeOrder(1)"
+              @mouseenter="orderE(1)"
+              @mouseleave="orderL(1)"
+            >
               <a
                 >综合<span v-show="isOne"
                   ><span v-show="isDesc">⬇</span
@@ -43,7 +52,12 @@
                 ></a
               >
             </li>
-            <li :class="{ active: !isOne }" @click="changeOrder(2)">
+            <li
+              :class="{ active: !isOne }"
+              @click="changeOrder(2)"
+              @mouseenter="orderE(2)"
+              @mouseleave="orderL(2)"
+            >
               <a
                 >价格<span v-show="!isOne"
                   ><span v-show="isDesc">⬇</span
@@ -59,9 +73,7 @@
           <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
             <div class="list-wrap">
               <div class="p-img">
-                <a href="item.html" target="_blank"
-                  ><img :src="goods.defaultImg"
-                /></a>
+                <a><img :src="goods.defaultImg" /></a>
               </div>
               <div class="price">
                 <strong>
@@ -70,7 +82,7 @@
                 </strong>
               </div>
               <div class="attr">
-                <a target="_blank" href="item.html">{{ goods.title }}</a>
+                <a>{{ goods.title }}</a>
               </div>
               <div class="commit">
                 <i class="command"
@@ -79,15 +91,8 @@
                 >
               </div>
               <div class="operate">
-                <a
-                  href="success-cart.html"
-                  target="_blank"
-                  class="sui-btn btn-bordered btn-danger"
-                  >加入购物车</a
-                >
-                <a href="javascript:void(0);" class="sui-btn btn-bordered"
-                  >收藏</a
-                >
+                <a class="sui-btn btn-bordered btn-danger">加入购物车</a>
+                <a class="sui-btn btn-bordered">收藏</a>
               </div>
             </div>
           </li>
@@ -126,6 +131,9 @@ export default {
         props: [],
         trademark: "",
       },
+      // 筋斗云位置
+      orderC: false,
+      orderC1: false,
     };
   },
   methods: {
@@ -182,7 +190,7 @@ export default {
         this.getData();
       }
     },
-    // 改变排序
+    // 改变排序及下边框位置
     changeOrder(flag) {
       let originFlag = this.searchParams.order.split(":")[0];
       let originSort = this.searchParams.order.split(":")[1];
@@ -194,6 +202,32 @@ export default {
         this.searchParams.order = `${flag}:desc`;
       }
       this.getData();
+
+      // 实现筋斗云效果
+      if (flag == 1) {
+        this.orderC = false;
+        // 改变原始状态
+        this.orderC1 = this.orderC;
+      } else {
+        this.orderC = true;
+        // 改变原始状态
+        this.orderC1 = this.orderC;
+      }
+    },
+    // 排序筋斗云效果
+    orderE(i) {
+      // 备份原始状态以供离开时返回
+      this.orderC1 = this.orderC;
+      // 判断此时下边框应该再哪
+      if (i == 1) {
+        this.orderC = false;
+      } else {
+        this.orderC = true;
+      }
+    },
+    orderL(i) {
+      // 返回原始状态
+      this.orderC = this.orderC1;
     },
     // 获取页码器子组件改变页码数的自定义事件
     getPageNo(pageNo) {
@@ -306,9 +340,14 @@ export default {
   float: left;
   margin: 0 10px 0 0;
 }
+.sui-nav ul {
+  position: relative;
+}
 .sui-nav li {
   float: left;
   line-height: 18px;
+  width: 66px;
+  text-align: center;
 }
 .sui-nav li a {
   display: block;
@@ -317,14 +356,33 @@ export default {
   color: #777;
   text-decoration: none;
   font-size: 14px;
+  transition: all 0.2s linear;
+}
+.sui-nav li a:hover {
+  color: #f60;
 }
 .sui-nav li.active a {
   color: #f60;
+  /* border-bottom: 4px solid #f60; */
+}
+.sui-nav-boder {
+  position: absolute;
+  top: 34.5px;
+  left: 0;
+  width: 66px;
+  height: 4px;
+  box-sizing: border-box;
   border-bottom: 4px solid #f60;
+  transition: all 0.2s linear;
+}
+.sui-nav-boder-second {
+  left: 66px;
 }
 
 .goods-list {
   margin: 20px 0;
+  /* 防止由于商品上移动画导致的塌陷 */
+  min-height: 443px;
 }
 .goods-list ul {
   display: flex;

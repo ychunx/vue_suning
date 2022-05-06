@@ -101,13 +101,13 @@
     <!-- banner模块 end -->
 
     <!-- floatBar 模块 start -->
-    <div class="floatBar">
+    <div class="floatBar" v-show="floatBarShow">
       <ul>
-        <li class="active">限时秒杀</li>
-        <li>领券中心</li>
-        <li>直播拼购</li>
-        <li>频道广场</li>
-        <li>猜你喜欢</li>
+        <li :class="{ active: isSelected == 1 }" @click="goMod(1)">限时秒杀</li>
+        <li :class="{ active: isSelected == 2 }" @click="goMod(2)">领券中心</li>
+        <li :class="{ active: isSelected == 3 }" @click="goMod(3)">直播拼购</li>
+        <li :class="{ active: isSelected == 4 }" @click="goMod(4)">频道广场</li>
+        <li :class="{ active: isSelected == 5 }" @click="goMod(5)">猜你喜欢</li>
       </ul>
       <a href="#">顶部</a>
       <a href="#">暴恐举报</a>
@@ -238,18 +238,29 @@
       </div>
     </div>
     <!-- 推荐模块 end -->
+
+    <!-- 顶部固定栏 -->
+    <FixBar />
   </div>
 </template>
 
 <script>
+import FixBar from "@/components/FixBar";
 import { mapState } from "vuex";
 import Swiper from "swiper";
 export default {
   name: "Home",
+  components: {
+    FixBar,
+  },
   data() {
     return {
       bannerColor: "#f91d25",
       bannerIndex: 0,
+      //floatBar相关，显示和防抖
+      floatBarShow: false,
+      floatTimer: null,
+      isSelected: 1,
     };
   },
   methods: {
@@ -269,9 +280,79 @@ export default {
       }
       this.bannerColor = this.bannerList[this.bannerIndex].color;
     },
+    // 设置滚动监听，决定floatBar显示与否
+    scroll() {
+      //防抖定时器
+      this.floatTimer = setTimeout(() => {
+        let top = Math.floor(
+          window.pageYOffset ||
+            document.documentElement.scrollTop ||
+            document.body.scrollTop
+        );
+        if (top >= 500) {
+          this.floatBarShow = true;
+          if (top >= 1700) {
+            this.isSelected = 5;
+          } else if (top >= 1400) {
+            this.isSelected = 4;
+          } else if (top >= 1100) {
+            this.floatBarShow = true;
+            this.isSelected = 3;
+          } else if (top >= 800) {
+            this.floatBarShow = true;
+            this.isSelected = 2;
+          } else if (top >= 500) {
+            this.floatBarShow = true;
+            this.isSelected = 1;
+          }
+        } else {
+          this.floatBarShow = false;
+        }
+      }, 10);
+    },
+    // floatBar点击跳转
+    goMod(i) {
+      switch (i) {
+        case 2:
+          this.animate(window, 900);
+          break;
+        case 3:
+          this.animate(window, 1200);
+          break;
+        case 4:
+          this.animate(window, 1500);
+          break;
+        case 5:
+          this.animate(window, 1800);
+          break;
+        default:
+          this.animate(window, 600);
+      }
+    },
+    // floatBar跳转动画
+    animate(obj, target, callback) {
+      clearInterval(obj.timer);
+      obj.timer = setInterval(() => {
+        let step = (target - window.pageYOffset) / 10;
+        // 支持反转动画
+        step = step > 0 ? Math.ceil(step) : Math.floor(step);
+        if (window.pageYOffset == target) {
+          clearInterval(obj.timer);
+          callback && callback();
+        }
+        window.scroll(0, window.pageYOffset + step);
+      }, 10);
+    },
   },
   mounted() {
+    // 获取banner图
     this.$store.dispatch("bannerList");
+
+    // 设置滚动监听，决定floatBar显示与否
+    window.addEventListener("scroll", () => {
+      clearTimeout(this.floatTimer);
+      this.scroll();
+    });
   },
   computed: {
     ...mapState({
@@ -536,9 +617,14 @@ export default {
   text-align: center;
   line-height: 28px;
   cursor: pointer;
+  transition: all 0.2s linear;
 }
 
 .floatBar li.active {
+  color: #fff;
+  background-color: #f60;
+}
+.floatBar li:hover {
   color: #fff;
   background-color: #f60;
 }

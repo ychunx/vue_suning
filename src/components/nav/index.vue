@@ -3,7 +3,7 @@
     <div class="dropdown" @mouseenter="navShowE" @mouseleave="navShowL">
       <div class="dt">分类</div>
       <transition name="sort">
-        <div class="sort" v-show="navShow">
+        <div class="sort" v-show="navShow && showOther1">
           <ul @click="goSearch">
             <li v-for="c1 in categoryList" :key="c1.categoryId">
               <!-- <img src="./images/1.png" /> -->
@@ -35,7 +35,7 @@
         </div>
       </transition>
     </div>
-    <div class="navitems">
+    <div class="navitems" v-show="showOther">
       <a href=""><img src="./images/nav.png" /></a>
       <a href="">电器城</a>
       <a href="">手机数码</a>
@@ -45,7 +45,7 @@
       <a href="">帮客服务</a>
       <a href="">金融</a>
     </div>
-    <div>
+    <div v-show="showOther">
       <img src="./images/nav2.png" />
     </div>
   </nav>
@@ -58,14 +58,23 @@ export default {
   data() {
     return {
       navShow: true,
+      // 为了实现顶部固定栏下拉框一开始不下拉，且鼠标离开后能收回
+      showOther1: false,
     };
   },
+  // 供顶部固定栏使用，决定是否显示出分类和下拉栏以为的元素是否显示
+  props: ["showOther"],
   methods: {
     navShowE() {
       this.navShow = true;
+      // 为了实现顶部固定栏下拉框一开始不下拉，且鼠标离开后能收回
+      this.showOther1 = true;
     },
     navShowL() {
-      if (this.$route.path != "/home") {
+      // 为了实现顶部固定栏下拉框一开始不下拉，且鼠标离开后能收回
+      this.showOther1 = false || this.showOther;
+      // 当不是home页面或者是home页面的顶部固定栏组件，离开时就会收回下拉栏
+      if (this.$route.path != "/home" || !this.showOther) {
         this.navShow = false;
       }
     },
@@ -102,9 +111,8 @@ export default {
   mounted() {
     // 获取分类数据
     this.$store.dispatch("categoryList");
-    /* if (this.$route.path != "/home") {
-      this.navShow = false;
-    } */
+    // 为了实现顶部固定栏下拉框一开始不下拉，且鼠标离开后能收回
+    this.showOther1 = this.showOther;
   },
   computed: {
     ...mapState({

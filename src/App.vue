@@ -2,7 +2,7 @@
   <div id="app">
     <Shortcut v-show="$route.meta.show" />
     <Header v-show="$route.meta.show" />
-    <Nav v-show="$route.meta.show" />
+    <Nav v-show="$route.meta.show" :showOther="true" />
     <router-view></router-view>
     <FooterBox v-show="$route.meta.show" />
     <Footer />
