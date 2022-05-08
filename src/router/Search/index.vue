@@ -72,18 +72,20 @@
         <ul class="yui3-g">
           <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
             <div class="list-wrap">
-              <div class="p-img">
-                <a><img :src="goods.defaultImg" /></a>
-              </div>
-              <div class="price">
-                <strong>
-                  <em>¥</em>
-                  <i>{{ goods.price }}.00</i>
-                </strong>
-              </div>
-              <div class="attr">
-                <a>{{ goods.title }}</a>
-              </div>
+              <router-link :to="`/detail/${goods.id}`">
+                <div class="p-img">
+                  <a><img :src="goods.defaultImg" /></a>
+                </div>
+                <div class="price">
+                  <strong>
+                    <em>¥</em>
+                    <i>{{ goods.price }}.00</i>
+                  </strong>
+                </div>
+                <div class="attr">
+                  <a>{{ goods.title }}</a>
+                </div>
+              </router-link>
               <div class="commit">
                 <i class="command"
                   >已有<span>{{ goods.hotScore }}</span
@@ -415,7 +417,9 @@ export default {
   height: auto;
   vertical-align: middle;
 }
-
+.list-wrap > a:nth-child(1):hover .attr a {
+  color: #f60;
+}
 .price {
   padding-left: 15px;
   font-size: 18px;
@@ -443,9 +447,6 @@ export default {
   color: #333;
   text-decoration: none;
   transition: all 0.2s linear;
-}
-.attr a:hover {
-  color: #f60;
 }
 
 .commit {

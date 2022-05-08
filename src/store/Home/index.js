@@ -30,11 +30,11 @@ const state = {
     bannerList: []
 }
 
-const getter = {}
+const getters = {}
 
 export default {
     actions,
     mutations,
     state,
-    getter
+    getters
 }

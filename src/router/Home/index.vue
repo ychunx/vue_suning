@@ -569,6 +569,7 @@ export default {
 
 .botBox ul li {
   width: 33.33%;
+  transition: all 0.2s linear;
 }
 
 .botBox ul li:hover {
@@ -587,6 +588,7 @@ export default {
 .botBox a {
   color: #333;
   font-size: 14px;
+  transition: all 0.2s linear;
 }
 
 .botBox ul li:hover a {

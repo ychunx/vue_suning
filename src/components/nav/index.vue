@@ -82,6 +82,8 @@ export default {
       let node = e.target;
       let { categoryname, category1id, category2id, category3id } =
         node.dataset;
+      // 防止点击重复分类报错
+      if (categoryname == this.$route.query.categoryName) return;
       if (categoryname) {
         let location = { name: "Search" };
         let query = { categoryName: categoryname };
@@ -138,7 +140,7 @@ export default {
   width: 200px;
   background: #ff8000;
   border-radius: 12px 12px 0 0;
-  z-index: 3;
+  z-index: 999;
 }
 
 .dropdown .dt {
@@ -275,6 +277,7 @@ export default {
   color: #333;
   font-size: 15px;
   font-weight: bold;
+  overflow: hidden;
   transition: all 0.2s linear;
 }
 
