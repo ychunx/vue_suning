@@ -1,10 +1,20 @@
-import { reqGoodsDetail } from "@/api"
+import { reqGoodsDetail, reqChangeShopCart } from "@/api"
+import { getUuid } from '@/utils/uuid'
 
 const actions = {
     async getGoodsDetail({ commit }, skuid) {
         let res = await reqGoodsDetail(skuid)
         if (res.code == 200) {
             commit('GETGOODSDETAIL', res.data)
+        }
+    },
+    // 更新购物车
+    async changeShopCart({ commit }, { skuId, skuNum }) {
+        let res = await reqChangeShopCart(skuId, skuNum)
+        if (res.code == 200) {
+            return 'ok'
+        } else {
+            return Promise.reject(new Error('faile'))
         }
     }
 }
@@ -16,7 +26,9 @@ const mutations = {
 }
 
 const state = {
-    goodsDetail: {}
+    goodsDetail: {},
+    // 游客身份ID
+    uuid: getUuid()
 }
 
 const getters = {

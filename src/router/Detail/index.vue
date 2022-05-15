@@ -100,12 +100,38 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <!-- 将除了整数的字符都替换为空 -->
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="skuNum"
+                  oninput="value=value.replace(/[^\d]/g,'')"
+                  @change="changeSkuNum"
+                />
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuNum > 1 ? skuNum-- : (skuNum = 1)"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="changeShopCart">加入购物车</a>
+              </div>
+              <div class="addSuccessMask" v-if="isShowMask">
+                <div class="addSuccess">
+                  <div class="addSuccess-top">
+                    温馨提示
+                    <a @click="closeMask">X</a>
+                  </div>
+                  <div class="addSuccess-main">
+                    已成功加入购物车！
+                    <router-link to="/shopcart"
+                      >去购物车结算&nbsp;></router-link
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -351,6 +377,12 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
+  data() {
+    return {
+      skuNum: 1,
+      isShowMask: false,
+    };
+  },
   components: {
     ImageList,
     Zoom,
@@ -362,6 +394,23 @@ export default {
         item.isChecked = 0;
       });
       spuSaleAttrValue.isChecked = 1;
+    },
+    changeSkuNum() {
+      if (this.skuNum < 1) this.skuNum = 1;
+    },
+    async changeShopCart() {
+      try {
+        await this.$store.dispatch("changeShopCart", {
+          skuId: this.$route.params.skuid,
+          skuNum: this.skuNum,
+        });
+        this.isShowMask = true;
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    closeMask() {
+      this.isShowMask = false;
     },
   },
   beforeMount() {
@@ -536,6 +585,10 @@ export default {
   border-left: 1px solid #eee;
   cursor: pointer;
 }
+
+.chooseArea dl dd:hover {
+  border: 1px solid #f50;
+}
 .chooseArea dl .active {
   border: 1px solid #f50;
 }
@@ -580,6 +633,7 @@ export default {
 
 .cartWrap .add {
   float: left;
+  cursor: pointer;
 }
 .cartWrap .add a {
   background-color: #f50;
@@ -590,6 +644,68 @@ export default {
   height: 36px;
   line-height: 36px;
   display: block;
+}
+.addSuccessMask {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
+.addSuccess {
+  box-sizing: content-box;
+  width: 450px;
+  height: 150px;
+  border: 6px solid rgba(0, 0, 0, 0.35);
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -225px;
+  margin-top: -75px;
+}
+.addSuccess-top {
+  width: 450px;
+  height: 30px;
+  background-color: #eeeeee;
+  line-height: 30px;
+  padding-left: 10px;
+  color: #666;
+  font-size: 14px;
+  font-weight: bold;
+}
+.addSuccess-top a {
+  color: #999;
+  float: right;
+  font-size: 20px;
+  font-weight: normal;
+  display: block;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+.addSuccess-main {
+  width: 450px;
+  height: 120px;
+  line-height: 32px;
+  padding: 44px 30px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #666;
+}
+.addSuccess-main a {
+  display: block;
+  float: right;
+  width: 120px;
+  height: 32px;
+  background-color: #f50;
+  color: #fff;
+  font-weight: normal;
+  text-align: center;
+  cursor: pointer;
 }
 
 .product-detail {

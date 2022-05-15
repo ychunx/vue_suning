@@ -21,7 +21,7 @@
       <a href="">沙发</a>
     </div>
     <!-- 右边导航栏 -->
-    <div class="sidebar">
+    <div class="sidebar" v-show="isShopCart">
       <div class="tar_car">
         <span class="car">购物车</span>
         <span class="count">0</span>
@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       keyword: "",
+      isShopCart: true,
     };
   },
   methods: {
@@ -45,6 +46,16 @@ export default {
       location.params = { keyword: this.keyword || undefined };
       this.$router.push(location);
       this.keyword = "";
+    },
+  },
+  watch: {
+    // 控制右固定栏在购物车页面不显示
+    $route(newv, oldv) {
+      if (this.$route.path == "/shopcart") {
+        this.isShopCart = false;
+      } else {
+        this.isShopCart = true;
+      }
     },
   },
 };
