@@ -17,3 +17,7 @@ export const reqGoodsDetail = (skuId) => requests({ url: '/item/' + skuId, metho
 export const reqChangeShopCart = (skuId, skuNum) => requests({ url: `/cart/addToCart/${skuId}/${skuNum}`, method: 'post' })
 
 export const reqCartList = () => requests({ url: '/cart/cartList', method: 'get' })
+
+export const reqDeleteCart = (skuId) => requests({ url: `/cart/deleteCart/${skuId}`, method: 'delete' })
+
+export const reqUpdateCheck = (skuId, ischecked) => requests({ url: `/cart/checkCart/${skuId}/${ischecked}`, method: 'get' })

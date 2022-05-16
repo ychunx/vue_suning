@@ -22,21 +22,23 @@
     </div>
     <!-- 右边导航栏 -->
     <div class="sidebar" v-show="isShopCart">
-      <div class="tar_car">
+      <div class="tar_car" @click="goShopCart">
         <span class="car">购物车</span>
-        <span class="count">0</span>
+        <span class="count">{{ shopCartNum }}</span>
       </div>
     </div>
   </header>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Header",
   data() {
     return {
       keyword: "",
       isShopCart: true,
+      shopCartNum: 0,
     };
   },
   methods: {
@@ -47,6 +49,9 @@ export default {
       this.$router.push(location);
       this.keyword = "";
     },
+    goShopCart() {
+      this.$router.push("/shopcart");
+    },
   },
   watch: {
     // 控制右固定栏在购物车页面不显示
@@ -56,7 +61,22 @@ export default {
       } else {
         this.isShopCart = true;
       }
+      // 每当路由跳转时刷新购物车数量
+      this.shopCartNum = this.cartList.cartInfoList
+        ? this.cartList.cartInfoList.length
+        : 0;
     },
+  },
+  computed: {
+    ...mapGetters(["cartList"]),
+  },
+  mounted() {
+    // 等获取到购物车数据后再计算数量
+    setTimeout(() => {
+      this.shopCartNum = this.cartList.cartInfoList
+        ? this.cartList.cartInfoList.length
+        : 0;
+    }, 1000);
   },
 };
 </script>
@@ -168,6 +188,7 @@ export default {
   height: 160px;
   text-align: center;
   background-color: #383838;
+  cursor: pointer;
 }
 
 .tar_car span {

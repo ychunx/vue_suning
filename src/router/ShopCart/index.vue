@@ -18,7 +18,12 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="goods in cartInfoList" :key="goods.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="goods.isChecked" />
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="goods.isChecked"
+              @change="updateCheck(goods, $event)"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="goods.imgUrl" />
@@ -46,18 +51,23 @@
           <li class="cart-list-con7">
             <a href="#none">移到收藏</a>
             <br />
-            <a href="#none" class="sindelet">删除</a>
+            <a class="sindelet" @click="deleteGoods(goods)">删除</a>
           </li>
         </ul>
       </div>
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllChecked" />
+        <input
+          class="chooseAll"
+          type="checkbox"
+          :checked="isAllChecked"
+          @change="changeAll"
+        />
         <span>&nbsp;全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a @click="deleteAllChecked">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -85,35 +95,86 @@ export default {
   data() {
     return {
       isAllChecked: false,
+      changeTimer: null,
     };
   },
   methods: {
     getCartDate() {
       this.$store.dispatch("getCartList");
     },
-    async changeSkuNum(type, goods, disNum) {
-      switch (type) {
-        case "add":
-          disNum = 1;
-          break;
-        case "mins":
-          disNum = goods.skuNum > 1 ? -1 : 0;
-          break;
-        case "input":
-          if (disNum < 1) {
-            disNum = 0;
-            alert("请输入正确的数量！");
-          } else {
-            disNum = disNum - goods.skuNum;
-          }
-          break;
-      }
+    // 修改产品个数(节流)
+    changeSkuNum(type, goods, disNum) {
+      if (this.changeTimer) return;
+      this.changeTimer = setTimeout(async () => {
+        switch (type) {
+          case "add":
+            disNum = 1;
+            break;
+          case "mins":
+            disNum = goods.skuNum > 1 ? -1 : 0;
+            break;
+          case "input":
+            if (disNum < 1) {
+              disNum = 0;
+              alert("请输入正确的数量！");
+            } else {
+              disNum = disNum - goods.skuNum;
+            }
+            break;
+        }
+        try {
+          await this.$store.dispatch("changeShopCart", {
+            skuId: goods.skuId,
+            skuNum: disNum,
+          });
+          this.getCartDate();
+        } catch (error) {
+          alert(error.message);
+        }
+        this.changeTimer = null;
+      }, 1000);
+    },
+    // 删除某个产品
+    async deleteGoods(goods) {
       try {
-        await this.$store.dispatch("changeShopCart", {
+        await this.$store.dispatch("deleteCart", goods.skuId);
+        this.getCartDate();
+        // 刷新顶部固定栏购物车数量
+        this.$bus.$emit("fleshCartNum");
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    // 修改产品选中状态
+    async updateCheck(goods, e) {
+      try {
+        let isChecked = e.target.checked ? "1" : "0";
+        await this.$store.dispatch("updateCheck", {
           skuId: goods.skuId,
-          skuNum: disNum,
+          isChecked,
         });
         this.getCartDate();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    // 修改全部产品选中状态
+    async changeAll(e) {
+      try {
+        let isChecked = e.target.checked ? "1" : "0";
+        await this.$store.dispatch("changeAll", isChecked);
+        this.getCartDate();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    // 删除选中产品
+    async deleteAllChecked() {
+      try {
+        await this.$store.dispatch("deleteAllChecked");
+        this.getCartDate();
+        // 刷新顶部固定栏购物车数量
+        this.$bus.$emit("fleshCartNum");
       } catch (error) {
         alert(error.message);
       }
@@ -134,7 +195,12 @@ export default {
           sum++;
         }
       });
-      if (sum == this.cartInfoList.length) this.isAllChecked = true;
+      // 如果全选了且购物车不为空则勾选
+      if (sum == this.cartInfoList.length && sum > 0) {
+        this.isAllChecked = true;
+      } else {
+        this.isAllChecked = false;
+      }
       return sum;
     },
     totalPrice() {
@@ -269,6 +335,7 @@ export default {
 }
 .cart-list-con7 a {
   color: #666;
+  cursor: pointer;
 }
 
 .cart-tool {
@@ -299,6 +366,7 @@ export default {
   float: left;
   padding: 0 10px;
   color: #666;
+  cursor: pointer;
 }
 
 .money-box {

@@ -47,7 +47,6 @@ export default {
       if (item.isDefault == "1") {
         this.index = index;
       }
-      console.log(item.isDefault, index);
     });
     this.$bus.$on("getIndex", (i) => {
       this.index = i;

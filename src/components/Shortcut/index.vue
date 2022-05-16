@@ -19,7 +19,9 @@
           <li class="arrow_icon">我的订单</li>
           <li class="arrow_icon">我的易购</li>
           <li>苏宁会员</li>
-          <li class="style_ora arrow_icon">购物车&nbsp;0</li>
+          <li class="style_ora arrow_icon" @click="goShopCart">
+            购物车&nbsp;{{ shopCartNum }}
+          </li>
           <li>易付宝</li>
           <li>企业采购</li>
           <li class="arrow_icon">手机苏宁</li>
@@ -30,8 +32,49 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Shortcut",
+  data() {
+    return {
+      shopCartNum: 0,
+    };
+  },
+  methods: {
+    goShopCart() {
+      this.$router.push("/shopcart");
+    },
+  },
+  computed: {
+    ...mapGetters(["cartList"]),
+  },
+  mounted() {
+    this.$store.dispatch("getCartList");
+    // 等获取到购物车数据后再计算数量
+    setTimeout(() => {
+      this.shopCartNum = this.cartList.cartInfoList
+        ? this.cartList.cartInfoList.length
+        : 0;
+    }, 1000);
+    // 在购物车页面删除产品时同时刷新顶部固定栏数量
+    this.$bus.$on("fleshCartNum", () => {
+      setTimeout(() => {
+        this.shopCartNum = this.cartList.cartInfoList
+          ? this.cartList.cartInfoList.length
+          : 0;
+      }, 500);
+    });
+  },
+  watch: {
+    $route(newv, oldv) {
+      // 每当路由跳转时刷新购物车数量
+      setTimeout(() => {
+        this.shopCartNum = this.cartList.cartInfoList
+          ? this.cartList.cartInfoList.length
+          : 0;
+      }, 500);
+    },
+  },
 };
 </script>
 

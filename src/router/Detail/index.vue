@@ -395,9 +395,11 @@ export default {
       });
       spuSaleAttrValue.isChecked = 1;
     },
+    // 通过输入框更改数量时规范
     changeSkuNum() {
       if (this.skuNum < 1) this.skuNum = 1;
     },
+    // 加入购物车，且成功后显示遮罩
     async changeShopCart() {
       try {
         await this.$store.dispatch("changeShopCart", {
@@ -409,6 +411,7 @@ export default {
         alert(error.message);
       }
     },
+    // 隐藏遮罩
     closeMask() {
       this.isShowMask = false;
     },
