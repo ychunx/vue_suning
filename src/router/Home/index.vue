@@ -49,11 +49,14 @@
               </a>
             </div>
             <div class="notLogin">
-              <div class="btnGroup">
+              <div class="btnGroup" v-if="!userName">
                 <p class="hi">Hi，欢迎来到苏宁易购</p>
-                <a href="#">登录</a>
+                <router-link to="/login">登录</router-link>
                 <i>|</i>
-                <a href="#">注册</a>
+                <router-link to="/register">注册</router-link>
+              </div>
+              <div class="btnGroup" v-else>
+                <p class="hi">Hi，{{ userName }}</p>
               </div>
               <a href="#">199新人专享</a>
               <a href="#">开通super尊享特权</a>
@@ -358,6 +361,10 @@ export default {
     ...mapState({
       bannerList: (state) => state.Home.bannerList,
     }),
+    // 获取已登录的用户名
+    userName() {
+      return this.$store.state.User.userInfo.name;
+    },
   },
   watch: {
     bannerList: {

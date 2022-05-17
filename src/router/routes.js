@@ -2,6 +2,7 @@
 
 import Home from './Home'
 import Register from './Register'
+import Login from './Login'
 import Search from './Search'
 import Detail from './Detail'
 import ShopCart from './ShopCart'
@@ -20,6 +21,11 @@ export default [
     {
         path: '/register',
         component: Register,
+        meta: { showRegister: false, showShopCart: true }
+    },
+    {
+        path: '/login',
+        component: Login,
         meta: { showRegister: false, showShopCart: true }
     },
     {

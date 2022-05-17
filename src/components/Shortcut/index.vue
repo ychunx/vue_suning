@@ -12,9 +12,14 @@
       </div>
       <div class="fr">
         <ul>
-          <li class="login">
-            <a href="#">请登录</a>&nbsp;&nbsp;
+          <li class="login" v-if="!userName">
+            <router-link to="/login">请登录</router-link>&nbsp;&nbsp;
             <router-link to="/register" class="style_ora">注册有礼</router-link>
+          </li>
+          <li class="login" v-else>
+            <a class="style_ora">{{ userName }}</a
+            >&nbsp;&nbsp;
+            <a @click="logout">退出登录</a>
           </li>
           <li class="arrow_icon">我的订单</li>
           <li class="arrow_icon">我的易购</li>
@@ -44,9 +49,22 @@ export default {
     goShopCart() {
       this.$router.push("/shopcart");
     },
+    // 退出登录
+    async logout() {
+      try {
+        await this.$store.dispatch("logout");
+        this.$router.push("/home");
+      } catch (error) {
+        alert(error.message);
+      }
+    },
   },
   computed: {
     ...mapGetters(["cartList"]),
+    // 获取已登录的用户名
+    userName() {
+      return this.$store.state.User.userInfo.name;
+    },
   },
   mounted() {
     this.$store.dispatch("getCartList");

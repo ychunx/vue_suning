@@ -1,79 +1,61 @@
 <template>
   <div>
-    <!-- 注册页头部 start -->
+    <!-- 登录页头部 start -->
     <div class="header reg_w">
       <router-link to="/home" class="reg_logo fl"
         ><img src="./images/logo.png"
       /></router-link>
-      <div class="reg_txt fl">欢迎注册</div>
-      <router-link to="/login" class="reg_login fr"
-        >我已经注册，马上登录&gt;</router-link
+      <div class="reg_txt fl">欢迎登录</div>
+      <router-link to="/register" class="reg_login fr"
+        >我还未注册，马上注册&gt;</router-link
       >
     </div>
-    <!-- 注册页头部 end -->
+    <!-- 登录页头部 end -->
 
-    <!-- 注册页主体 start -->
+    <!-- 登录页主体 start -->
     <div class="main reg_w">
       <div class="regForm">
-        <p>注册领199元大礼包</p>
-        <div class="phone">
-          <label>手机号码</label>
-          <input
-            type="text"
-            placeholder="建议使用常用的手机号"
-            v-model="phone"
-          />
+        <div>
+          <a>扫码登录</a>|
+          <a class="active">账户登录</a>
         </div>
-        <div></div>
-        <div class="msg">
-          <label>手机验证码</label>
-          <input type="text" placeholder="请输入手机验证码" v-model="code" />
-          <button @click="getCode">获取短信验证码</button>
+        <div class="phone">
+          <label>账号</label>
+          <input type="text" placeholder="用户名/手机/邮箱" v-model="phone" />
         </div>
         <div class="sendSce"></div>
         <div class="pwd">
-          <label>设置密码</label>
+          <label>密码</label>
           <input
             type="password"
-            placeholder="请输入密码"
+            placeholder="密码"
             v-model="password"
-            @keyup.enter="register"
+            @keyup.enter="login"
           />
         </div>
         <div></div>
-        <button class="submit" @click="register">提交注册</button>
+        <button class="submit" @click="login">登录</button>
       </div>
     </div>
-    <!-- 注册页主体 end -->
+    <!-- 登录页主体 end -->
   </div>
 </template>
 
 <script>
 export default {
-  name: "Register",
+  name: "Login",
   data() {
     return {
       phone: "",
-      code: "",
       password: "",
     };
   },
   methods: {
-    // 获取验证码
-    async getCode() {
+    async login() {
+      let { phone, password } = this;
       try {
-        await this.$store.dispatch("getCode", this.phone);
-        this.code = this.$store.state.User.code;
-      } catch (error) {
-        alert(error.message);
-      }
-    },
-    // 注册
-    async register() {
-      let { phone, code, password } = this;
-      try {
-        await this.$store.dispatch("register", { phone, code, password });
-        this.$router.push("/login");
+        await this.$store.dispatch("login", { phone, password });
+        this.$router.push("/home");
       } catch (error) {
         alert(error.message);
       }
@@ -128,16 +110,30 @@ export default {
   background: #f8f8f8;
   padding: 55px 0;
   line-height: 1.5;
+  min-height: 447px;
 }
 
 .regForm {
   padding: 0 305px;
 }
 
-.regForm p {
-  color: #222;
-  font-size: 14px;
-  margin-bottom: 17px;
+.regForm > div:first-child {
+  width: 360px;
+  height: 50px;
+  margin-bottom: 40px;
+  color: #aaa;
+  border-bottom: 1px solid #aaa;
+}
+.regForm > div:first-child a {
+  display: inline-block;
+  width: 175px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+}
+.regForm > div:first-child a.active {
+  color: #f60;
+  border-bottom: 4px solid #f60;
 }
 
 .phone,
