@@ -7,6 +7,7 @@
             class="chooseAll"
             type="checkbox"
             :checked="isAllChecked"
+            @change="changeAll"
           />&nbsp;全选
         </div>
         <div class="cart-th2">商品信息</div>
@@ -81,7 +82,7 @@
           <i class="summoney">{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">去结算</a>
+          <router-link class="sum-btn" to="/trade">去结算</router-link>
         </div>
       </div>
     </div>

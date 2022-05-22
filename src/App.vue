@@ -1,14 +1,11 @@
 <template>
   <div id="app">
-    <Shortcut v-show="$route.meta.showRegister" />
-    <Header v-show="$route.meta.showRegister" />
-    <Nav
-      v-show="$route.meta.showRegister && $route.meta.showShopCart"
-      :showOther="true"
-    />
+    <Shortcut v-show="$route.meta.showShortcut" />
+    <Header v-show="$route.meta.showHeader" />
+    <Nav v-show="$route.meta.showNav" :showOther="true" />
     <router-view></router-view>
-    <FooterBox v-show="$route.meta.showRegister && $route.meta.showShopCart" />
-    <Footer />
+    <FooterBox v-show="$route.meta.showFooterBox" />
+    <Footer v-show="$route.meta.showFooter" />
   </div>
 </template>
 

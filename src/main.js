@@ -13,11 +13,15 @@ Vue.component(Pagination.name, Pagination)
 
 Vue.config.productionTip = false
 
+// 引入全部api
+import * as API from './api'
+
 new Vue({
   render: h => h(App),
   router,
   store,
   beforeCreate() {
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   }
 }).$mount('#app')
