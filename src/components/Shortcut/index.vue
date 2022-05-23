@@ -3,7 +3,7 @@
     <div class="w">
       <div class="fl">
         <ul>
-          <li class="arrow_icon">网站导航</li>
+          <li class="arrow_icon" @click="$router.push('/home')">网站导航</li>
           <li class="arrow_icon">商家入驻</li>
           <li class="arrow_icon">客户服务</li>
           <li>网页无障碍</li>
@@ -21,7 +21,7 @@
             >&nbsp;&nbsp;
             <a @click="logout">退出登录</a>
           </li>
-          <li class="arrow_icon">我的订单</li>
+          <li class="arrow_icon" @click="$router.push('/center')">我的订单</li>
           <li class="arrow_icon">我的易购</li>
           <li>苏宁会员</li>
           <li class="style_ora arrow_icon" @click="goShopCart">

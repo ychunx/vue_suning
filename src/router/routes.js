@@ -7,9 +7,12 @@ import Detail from './Detail'
 import ShopCart from './ShopCart'
 import Trade from './Trade'
 import Pay from './Pay'
+import Center from './Center'
+
+import MyOrder from './Center/MyOrder'
+import GroupOrder from './Center/GroupOrder'
 
 export default [
-    // showRegister在App.vue控制组件的显示
     {
         path: '*',
         redirect: '/home'
@@ -102,5 +105,44 @@ export default [
             showFooterBox: false,
             showFooter: false,
         }
+    },
+    {
+        path: '/center',
+        component: Center,
+        meta: {
+            showShortcut: true,
+            showHeader: false,
+            showNav: false,
+            showFooterBox: false,
+            showFooter: true,
+        },
+        children: [
+            {
+                path: '/center',
+                redirect: '/center/myorder'
+            },
+            {
+                path: 'myorder',
+                component: MyOrder,
+                meta: {
+                    showShortcut: true,
+                    showHeader: false,
+                    showNav: false,
+                    showFooterBox: false,
+                    showFooter: true,
+                }
+            },
+            {
+                path: 'grouporder',
+                component: GroupOrder,
+                meta: {
+                    showShortcut: true,
+                    showHeader: false,
+                    showNav: false,
+                    showFooterBox: false,
+                    showFooter: true,
+                }
+            }
+        ]
     },
 ]
