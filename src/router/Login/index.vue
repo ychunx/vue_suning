@@ -55,7 +55,10 @@ export default {
       let { phone, password } = this;
       try {
         await this.$store.dispatch("login", { phone, password });
-        this.$router.push("/home");
+
+        // 登陆后跳转到未登录时想去的路由
+        let toPath = this.$route.query.redirect || "/home";
+        this.$router.push(toPath);
       } catch (error) {
         alert(error.message);
       }

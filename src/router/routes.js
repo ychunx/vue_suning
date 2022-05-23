@@ -93,6 +93,14 @@ export default [
             showNav: false,
             showFooterBox: false,
             showFooter: false,
+        },
+        beforeEnter: (to, from, next) => {
+            if (from.path == '/shopcart') {
+                next()
+            } else {
+                // 回到from
+                next(false)
+            }
         }
     },
     {
@@ -104,6 +112,14 @@ export default [
             showNav: false,
             showFooterBox: false,
             showFooter: false,
+        },
+        beforeEnter: (to, from, next) => {
+            if (from.path == '/trade') {
+                next()
+            } else {
+                // 回到from
+                next(false)
+            }
         }
     },
     {
