@@ -1,0 +1,35 @@
+/* 基础样式表 */
+
+* {
+    /* 清楚内外边距 */
+    margin: 0;
+    padding: 0;
+    /* css3盒子模型 */
+    box-sizing: border-box;
+}
+
+/* 去除横向滚动条 */
+body {
+    overflow-x: hidden;
+}
+
+/* 去掉li 的小圆点 */
+li {
+    list-style: none
+}
+
+a {
+    color: #666;
+    text-decoration: none
+}
+
+button,
+input {
+    border: 0;
+    outline: none;
+}
+
+em,
+i {
+    font-style: normal
+}
