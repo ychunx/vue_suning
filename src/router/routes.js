@@ -1,16 +1,16 @@
 // 路由配置信息模块
-import Home from './Home'
-import Register from './Register'
-import Login from './Login'
-import Search from './Search'
-import Detail from './Detail'
-import ShopCart from './ShopCart'
-import Trade from './Trade'
-import Pay from './Pay'
-import Center from './Center'
+// import Home from './Home'
+// import Register from './Register'
+// import Login from './Login'
+// import Search from './Search'
+// import Detail from './Detail'
+// import ShopCart from './ShopCart'
+// import Trade from './Trade'
+// import Pay from './Pay'
+// import Center from './Center'
 
-import MyOrder from './Center/MyOrder'
-import GroupOrder from './Center/GroupOrder'
+// import MyOrder from './Center/MyOrder'
+// import GroupOrder from './Center/GroupOrder'
 
 export default [
     {
@@ -19,7 +19,7 @@ export default [
     },
     {
         path: '/home',
-        component: Home,
+        component: () => import('./Home'),
         meta: {
             showShortcut: true,
             showHeader: true,
@@ -30,7 +30,7 @@ export default [
     },
     {
         path: '/register',
-        component: Register,
+        component: () => import('./Register'),
         meta: {
             showShortcut: false,
             showHeader: false,
@@ -41,7 +41,7 @@ export default [
     },
     {
         path: '/login',
-        component: Login,
+        component: () => import('./Login'),
         meta: {
             showShortcut: false,
             showHeader: false,
@@ -53,7 +53,7 @@ export default [
     {
         path: '/search/:keyword?',
         name: 'Search',
-        component: Search,
+        component: () => import('./Search'),
         meta: {
             showShortcut: true,
             showHeader: true,
@@ -64,7 +64,7 @@ export default [
     },
     {
         path: '/detail/:skuid',
-        component: Detail,
+        component: () => import('./Detail'),
         meta: {
             showShortcut: true,
             showHeader: true,
@@ -75,7 +75,7 @@ export default [
     },
     {
         path: '/shopcart',
-        component: ShopCart,
+        component: () => import('./ShopCart'),
         meta: {
             showShortcut: true,
             showHeader: true,
@@ -86,7 +86,7 @@ export default [
     },
     {
         path: '/trade',
-        component: Trade,
+        component: () => import('./Trade'),
         meta: {
             showShortcut: true,
             showHeader: false,
@@ -105,7 +105,7 @@ export default [
     },
     {
         path: '/pay',
-        component: Pay,
+        component: () => import('./Pay'),
         meta: {
             showShortcut: false,
             showHeader: false,
@@ -124,7 +124,7 @@ export default [
     },
     {
         path: '/center',
-        component: Center,
+        component: () => import('./Center'),
         meta: {
             showShortcut: true,
             showHeader: false,
@@ -139,7 +139,7 @@ export default [
             },
             {
                 path: 'myorder',
-                component: MyOrder,
+                component: () => import('./Center/MyOrder'),
                 meta: {
                     showShortcut: true,
                     showHeader: false,
@@ -150,7 +150,7 @@ export default [
             },
             {
                 path: 'grouporder',
-                component: GroupOrder,
+                component: () => import('./Center/GroupOrder'),
                 meta: {
                     showShortcut: true,
                     showHeader: false,
