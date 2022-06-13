@@ -1,9 +1,13 @@
 <template>
+  <!-- nav栏包括分类、快捷标签、右部公示 -->
   <nav class="nav w">
+    <!-- 分类下拉框 -->
     <div class="dropdown" @mouseenter="navShowE" @mouseleave="navShowL">
       <div class="dt">分类</div>
+      <!-- 下拉过渡 -->
       <transition name="sort">
         <div class="sort" v-show="navShow && showOther1">
+          <!-- 展示平台分类属性一级、二级、三级 -->
           <ul @click="goSearch">
             <li v-for="c1 in categoryList" :key="c1.categoryId">
               <!-- <img src="./images/1.png" /> -->
@@ -35,6 +39,7 @@
         </div>
       </transition>
     </div>
+    <!-- 快捷标签 -->
     <div class="navitems" v-show="showOther">
       <a href=""><img src="./images/nav.png" /></a>
       <a href="">电器城</a>
@@ -57,7 +62,8 @@ export default {
   name: "Nav",
   data() {
     return {
-      navShow: true,
+      navShow: true, // 由于单页面，控制该组件显示
+
       // 为了实现顶部固定栏下拉框一开始不下拉，且鼠标离开后能收回
       showOther1: false,
     };
@@ -67,22 +73,27 @@ export default {
   methods: {
     navShowE() {
       this.navShow = true;
+
       // 为了实现顶部固定栏下拉框一开始不下拉，且鼠标离开后能收回
       this.showOther1 = true;
     },
     navShowL() {
       // 为了实现顶部固定栏下拉框一开始不下拉，且鼠标离开后能收回
       this.showOther1 = false || this.showOther;
+
       // 当不是home页面或者是home页面的顶部固定栏组件，离开时就会收回下拉栏
       if (this.$route.path != "/home" || !this.showOther) {
         this.navShow = false;
       }
     },
+    // 点击分类属性前往商品列表也就是搜索页
     goSearch(e) {
+      // 获取事件触发目标
       let node = e.target;
+      // 解构出分类属性名和一二三级ID
       let { categoryname, category1id, category2id, category3id } =
         node.dataset;
-      // 防止点击重复分类报错
+      // 防止点击重复分类报错（防止添加两个相同属性到面包屑）
       if (categoryname == this.$route.query.categoryName) return;
       if (categoryname) {
         let location = { name: "Search" };

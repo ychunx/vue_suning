@@ -53,13 +53,13 @@ export default {
   name: "Register",
   data() {
     return {
-      phone: "",
-      code: "",
-      password: "",
+      phone: "", // 手机号码
+      code: "", // 验证码
+      password: "", // 密码
     };
   },
   methods: {
-    // 获取验证码
+    // 申请发送验证码
     async getCode() {
       try {
         await this.$store.dispatch("getCode", this.phone);
@@ -73,6 +73,7 @@ export default {
       let { phone, code, password } = this;
       try {
         await this.$store.dispatch("register", { phone, code, password });
+        // 注册后跳转登录页
         this.$router.push("/login");
       } catch (error) {
         alert(error.message);

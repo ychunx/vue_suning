@@ -1,5 +1,7 @@
 <template>
+  <!-- 页面最底端页脚 -->
   <footer class="footer">
+    <!-- 居中 -->
     <div class="w">
       <p>
         <a href="#">苏宁互联</a>

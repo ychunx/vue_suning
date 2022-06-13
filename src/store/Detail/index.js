@@ -1,7 +1,10 @@
+// 引入需要用到的api
 import { reqGoodsDetail, reqChangeShopCart } from "@/api"
+// 获取随机字符串的工具
 import { getUuid } from '@/utils/uuid'
 
 const actions = {
+    // 获取商品详情
     async getGoodsDetail({ commit }, skuid) {
         let res = await reqGoodsDetail(skuid)
         if (res.code == 200) {
@@ -26,8 +29,9 @@ const mutations = {
 }
 
 const state = {
+    // 商品详情
     goodsDetail: {},
-    // 游客身份ID
+    // 游客身份ID，第一次先获取
     uuid: getUuid()
 }
 

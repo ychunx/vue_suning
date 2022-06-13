@@ -12,6 +12,10 @@
 // import MyOrder from './Center/MyOrder'
 // import GroupOrder from './Center/GroupOrder'
 
+// 使用路由懒加载
+
+// meta下都是控制组件显示的参数
+
 export default [
     {
         path: '*',

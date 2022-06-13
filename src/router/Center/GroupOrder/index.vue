@@ -1,4 +1,5 @@
 <template>
+  <!-- 团购订单二级路由组件 -->
   <div class="order-right">
     <div class="order-content">
       <div class="title">

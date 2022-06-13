@@ -1,4 +1,5 @@
 <template>
+  <!-- 顶部固定栏 -->
   <section class="shortcut">
     <div class="w">
       <div class="fl">
@@ -68,12 +69,13 @@ export default {
   },
   mounted() {
     this.$store.dispatch("getCartList");
-    // 等获取到购物车数据后再计算数量
+    // 等获取到购物车数据后再计算数量（应该用watch监视cartInfoList数据比较好）
     setTimeout(() => {
       this.shopCartNum = this.cartList.cartInfoList
         ? this.cartList.cartInfoList.length
         : 0;
     }, 1000);
+
     // 在购物车页面删除产品时同时刷新顶部固定栏数量
     this.$bus.$on("fleshCartNum", () => {
       setTimeout(() => {

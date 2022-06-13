@@ -1,4 +1,5 @@
 <template>
+  <!-- 我的订单二级路由组件 -->
   <div class="order-right">
     <div class="order-content">
       <div class="title">
@@ -19,6 +20,7 @@
         </table>
       </div>
       <div class="orders">
+        <!-- 表格展示数据 -->
         <table
           class="order-item"
           v-for="order in myOrderList.records"
@@ -89,6 +91,7 @@
         </table>
       </div>
       <div class="choose-order">
+        <!-- 自封装分页器组件 -->
         <Pagination
           :pageNo="pageNo"
           :pageSize="limit"
@@ -108,11 +111,14 @@ export default {
     return {
       pageNo: 1,
       limit: 3,
+
+      // 列表数据
       myOrderList: {},
     };
   },
   methods: {
     async getData() {
+      // 直接发请求不使用vuex
       let res = await this.$API.reqMyOrderList(this.pageNo, this.limit);
       if (res.code == 200) {
         this.myOrderList = res.data;
@@ -124,6 +130,7 @@ export default {
     },
   },
   mounted() {
+    // 组件挂载后请求数据
     this.getData();
   },
 };

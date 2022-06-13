@@ -1,12 +1,15 @@
 import { reqAdressInfo, reqOrderInfo } from "@/api"
 
 const actions = {
+    // 获取用户地址
     async getUserAddress({ commit }) {
         let res = await reqAdressInfo()
         if (res.code == 200) {
             commit('GETUSERADDRESS', res.data)
         }
     },
+
+    // 获取交易订单信息
     async getOrderInfo({ commit }) {
         let res = await reqOrderInfo()
         if (res.code == 200) {

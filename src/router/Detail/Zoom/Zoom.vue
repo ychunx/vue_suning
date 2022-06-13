@@ -1,4 +1,5 @@
 <template>
+  <!-- 图片和放大镜图 -->
   <div class="spec-preview">
     <img :src="imgObj.imgUrl" />
     <div class="event" @mousemove="handler"></div>
@@ -19,6 +20,7 @@ export default {
     };
   },
   methods: {
+    // 鼠标控制放大镜
     handler(e) {
       let mask = this.$refs.mask;
       let big = this.$refs.big;
@@ -42,12 +44,13 @@ export default {
     },
   },
   mounted() {
-    // 默认图片
+    // 计算默认图片
     this.skuImageList.forEach((item, index) => {
       if (item.isDefault == "1") {
         this.index = index;
       }
     });
+    // 绑定更改图片的事件
     this.$bus.$on("getIndex", (i) => {
       this.index = i;
     });

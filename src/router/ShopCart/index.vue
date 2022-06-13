@@ -1,4 +1,5 @@
 <template>
+  <!-- 购物车 -->
   <div class="cart">
     <div class="cart-main">
       <div class="cart-th">
@@ -95,39 +96,51 @@ export default {
   name: "ShopCart",
   data() {
     return {
-      isAllChecked: false,
-      changeTimer: null,
+      isAllChecked: false, // 全选
+      changeTimer: null, // 节流改变商品加购数量延时器
     };
   },
   methods: {
+    // 获取购物车数据
     getCartDate() {
       this.$store.dispatch("getCartList");
     },
+
     // 修改产品个数(节流)
     changeSkuNum(type, goods, disNum) {
+      // 如果还未冷却完毕则不操作
       if (this.changeTimer) return;
+
+      // 获取修改的相对值
       this.changeTimer = setTimeout(async () => {
         switch (type) {
+          // 增加则直接更改为1
           case "add":
             disNum = 1;
             break;
+          // 减少则如果当前不大于1不改变
           case "mins":
             disNum = goods.skuNum > 1 ? -1 : 0;
             break;
+          // 直接输入更改
           case "input":
             if (disNum < 1) {
               disNum = 0;
               alert("请输入正确的数量！");
             } else {
+              // 计算和当前数量的相对值
               disNum = disNum - goods.skuNum;
             }
             break;
         }
+
+        // 尝试修改
         try {
           await this.$store.dispatch("changeShopCart", {
             skuId: goods.skuId,
             skuNum: disNum,
           });
+          // 重新获取购物车数据
           this.getCartDate();
         } catch (error) {
           alert(error.message);
@@ -135,6 +148,7 @@ export default {
         this.changeTimer = null;
       }, 1000);
     },
+
     // 删除某个产品
     async deleteGoods(goods) {
       try {
@@ -146,6 +160,7 @@ export default {
         alert(error.message);
       }
     },
+
     // 修改产品选中状态
     async updateCheck(goods, e) {
       try {
@@ -159,9 +174,11 @@ export default {
         alert(error.message);
       }
     },
+
     // 修改全部产品选中状态
     async changeAll(e) {
       try {
+        // 勾选后的值为真则全部设为1，假则全部设为0
         let isChecked = e.target.checked ? "1" : "0";
         await this.$store.dispatch("changeAll", isChecked);
         this.getCartDate();
@@ -169,7 +186,8 @@ export default {
         alert(error.message);
       }
     },
-    // 删除选中产品
+
+    // 删除选中产品（后台有选中商品的数据，直接调用即可）
     async deleteAllChecked() {
       try {
         await this.$store.dispatch("deleteAllChecked");
@@ -186,9 +204,13 @@ export default {
   },
   computed: {
     ...mapGetters(["cartList"]),
+
+    // 从vuex获取购物车数据
     cartInfoList() {
       return this.cartList.cartInfoList || [];
     },
+
+    // 总数量
     totalnNum() {
       let sum = 0;
       this.cartInfoList.forEach((item) => {
@@ -204,6 +226,8 @@ export default {
       }
       return sum;
     },
+
+    // 总价格
     totalPrice() {
       let sum = 0;
       this.cartInfoList.forEach((item) => {

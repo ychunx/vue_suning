@@ -1,4 +1,5 @@
 <template>
+  <!-- 图片下方图片轮播图列表 -->
   <div class="swiper-container-father">
     <div class="swiper-container" ref="swiper">
       <div class="swiper-wrapper">
@@ -33,10 +34,12 @@ export default {
   methods: {
     changeCurrentIndex(i) {
       this.currentIndex = i;
+      // 通知上方改变图片
       this.$bus.$emit("getIndex", i);
     },
   },
   watch: {
+    // 监视有图片数据且下一次循环挂载完后赋予Swiper脚本
     skuImageList(newv, oldv) {
       this.$nextTick(() => {
         new Swiper(this.$refs.swiper, {

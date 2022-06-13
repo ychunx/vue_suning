@@ -1,4 +1,5 @@
 <template>
+  <!-- 商品详情页 -->
   <div class="detail">
     <!-- 主要内容区域 -->
     <section class="con">
@@ -379,8 +380,8 @@ export default {
   name: "Detail",
   data() {
     return {
-      skuNum: 1,
-      isShowMask: false,
+      skuNum: 1, // 加购数量
+      isShowMask: false, // 加购成功后的遮罩层
     };
   },
   components: {
@@ -390,6 +391,7 @@ export default {
   methods: {
     // 切换选择售卖属性
     changeActive(spuSaleAttrValue, List) {
+      // 排他
       List.forEach((item) => {
         item.isChecked = 0;
       });
@@ -417,6 +419,7 @@ export default {
     },
   },
   beforeMount() {
+    // 通知vuex派发获取商品详情数据
     this.$store.dispatch("getGoodsDetail", this.$route.params.skuid);
   },
   computed: {

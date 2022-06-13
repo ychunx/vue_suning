@@ -49,7 +49,7 @@
             <dd>收货地址</dd>
           </dl>
         </div>
-        <!-- 右侧内容 -->
+        <!-- 右侧二级路由内容 -->
         <router-view></router-view>
       </div>
     </div>

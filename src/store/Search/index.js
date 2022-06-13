@@ -1,5 +1,7 @@
 import { reqSearchInfo } from "@/api"
+
 const actions = {
+    // 获取搜索页数据
     async getSearchInfo({ commit }, params) {
         let res = await reqSearchInfo(params)
         if (res.code == 200) {

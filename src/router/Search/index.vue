@@ -1,4 +1,5 @@
 <template>
+  <!-- 搜索页专属内容组件 -->
   <div class="main w">
     <!--bread-->
     <div class="bread">
@@ -27,12 +28,13 @@
       </ul>
     </div>
 
-    <!--selector-->
+    <!--品牌、属性selector-->
     <SearchSelector @tmInfo="tmInfo" @attrInfo="attrInfo" />
 
     <!--details-->
     <div class="details clearfix">
       <div class="sui-navbar">
+        <!-- 排序nav -->
         <div class="navbar-inner filter">
           <ul class="sui-nav">
             <span
@@ -68,6 +70,7 @@
           </ul>
         </div>
       </div>
+      <!-- 商品展示 -->
       <div class="goods-list">
         <ul class="yui3-g">
           <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
@@ -100,6 +103,7 @@
           </li>
         </ul>
       </div>
+      <!-- 自封装分页器 -->
       <Pagination
         :pageNo="searchParams.pageNo"
         :pageSize="searchParams.pageSize"
@@ -122,16 +126,21 @@ export default {
   data() {
     return {
       searchParams: {
+        // 一二三级分类ID及分类名
         category1Id: "",
         category2Id: "",
         category3Id: "",
         categoryName: "",
-        keyword: "",
-        order: "1:desc",
+
+        keyword: "", // 搜索关键词
+
+        order: "1:desc", // 排序类型及顺序
+
         pageNo: 1,
         pageSize: 10,
-        props: [],
-        trademark: "",
+
+        props: [], // 属性
+        trademark: "", // 品牌
       },
       // 筋斗云位置
       orderC: false,
@@ -141,7 +150,7 @@ export default {
   methods: {
     // 获取页面数据并展示
     getData(pageNo) {
-      // 由于当页码大于将要请求的页码总数时，会出现空页面现象，所以要跳转回第一页
+      // 当前页码大于将要请求的页码总数时，会出现空页面现象，所以要跳转回第一页
       if (pageNo) {
         this.searchParams.pageNo = pageNo;
       } else {
@@ -149,6 +158,7 @@ export default {
       }
       this.$store.dispatch("getSearchInfo", this.searchParams);
     },
+
     // 去除分类名的面包屑
     removeName() {
       this.searchParams.categoryName = undefined;
@@ -161,7 +171,8 @@ export default {
         this.$router.push({ name: "Search", params: this.$route.params });
       }
     },
-    // 去除关键词params的面包屑
+
+    // 去除搜索关键词params的面包屑
     removeKeyword() {
       this.searchParams.keyword = undefined;
       this.getData();
@@ -169,30 +180,37 @@ export default {
         this.$router.push({ name: "Search", query: this.$route.query });
       }
     },
+
     // 去除品牌面包屑
     removeTm() {
       this.searchParams.trademark = undefined;
       this.getData();
     },
+
     // 去除属性面包屑
     removeAttr(i) {
       this.searchParams.props.splice(i, 1);
       this.getData();
     },
+
     // 获取品牌选择的自定义事件
     tmInfo(tm) {
       this.searchParams.trademark = `${tm.tmId}:${tm.tmName}`;
+      // 重新获取数据
       this.getData();
     },
+
     // 获取属性选择的自定义事件
     attrInfo(attr, v) {
       let prop = `${attr.attrId}:${v}:${attr.attrName}`;
+      // 如果没有属性重复才添加属性
       if (this.searchParams.props.indexOf(prop) == -1) {
         this.searchParams.props.push(prop);
         this.getData();
       }
     },
-    // 改变排序及下边框位置
+
+    // 改变排序及下边框筋斗云位置
     changeOrder(flag) {
       let originFlag = this.searchParams.order.split(":")[0];
       let originSort = this.searchParams.order.split(":")[1];
@@ -216,6 +234,7 @@ export default {
         this.orderC1 = this.orderC;
       }
     },
+
     // 排序筋斗云效果
     orderE(i) {
       // 备份原始状态以供离开时返回
@@ -227,10 +246,12 @@ export default {
         this.orderC = true;
       }
     },
+
     orderL(i) {
       // 返回原始状态
       this.orderC = this.orderC1;
     },
+
     // 获取页码器子组件改变页码数的自定义事件
     getPageNo(pageNo) {
       // this.searchParams.pageNo = pageNo;
@@ -242,7 +263,7 @@ export default {
     ...mapState({
       total: (state) => state.Search.searchInfo.total,
     }),
-    // 判断排序
+    // 判断排序类型
     isOne() {
       return this.searchParams.order.indexOf("1") != -1;
     },
@@ -251,6 +272,7 @@ export default {
     },
   },
   beforeMount() {
+    // 合并参数到searchParams供获取数据
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
   mounted() {
@@ -258,6 +280,7 @@ export default {
   },
   watch: {
     $route(newv, oldv) {
+      // 路由改变了就要清空一二三级数据
       this.searchParams.category1Id = undefined;
       this.searchParams.category2Id = undefined;
       this.searchParams.category3Id = undefined;

@@ -1,4 +1,5 @@
 <template>
+  <!-- home页面专属内容组件 -->
   <div class="main">
     <!-- banner模块 start -->
     <div class="banner" :style="{ background: bannerColor }">
@@ -242,7 +243,7 @@
     </div>
     <!-- 推荐模块 end -->
 
-    <!-- 顶部固定栏 -->
+    <!-- 下滑后顶部固定栏 -->
     <FixBar />
   </div>
 </template>
@@ -258,15 +259,19 @@ export default {
   },
   data() {
     return {
-      bannerColor: "#f91d25",
-      bannerIndex: 0,
+      bannerColor: "#f91d25", // banner背景颜色
+      bannerIndex: 0, // banner图标号
+
       //floatBar相关，显示和防抖
       floatBarShow: false,
       floatTimer: null,
+
+      // 左部浮动栏当前位置
       isSelected: 1,
     };
   },
   methods: {
+    // 上一张
     changeColorPrev() {
       if (this.bannerIndex <= 0) {
         this.bannerIndex = 7;
@@ -275,6 +280,7 @@ export default {
       }
       this.bannerColor = this.bannerList[this.bannerIndex].color;
     },
+    // 下一张
     changeColorNext() {
       if (this.bannerIndex >= 7) {
         this.bannerIndex = 0;
@@ -283,6 +289,7 @@ export default {
       }
       this.bannerColor = this.bannerList[this.bannerIndex].color;
     },
+
     // 设置滚动监听，决定floatBar显示与否
     scroll() {
       //防抖定时器
@@ -292,6 +299,7 @@ export default {
             document.documentElement.scrollTop ||
             document.body.scrollTop
         );
+        // 根据位置设置左边浮动栏
         if (top >= 500) {
           this.floatBarShow = true;
           if (top >= 1700) {
@@ -309,10 +317,12 @@ export default {
             this.isSelected = 1;
           }
         } else {
+          // 下滑小于500不显示
           this.floatBarShow = false;
         }
       }, 10);
     },
+
     // floatBar点击跳转
     goMod(i) {
       switch (i) {
@@ -332,15 +342,19 @@ export default {
           this.animate(window, 600);
       }
     },
+
     // floatBar跳转动画
     animate(obj, target, callback) {
       clearInterval(obj.timer);
       obj.timer = setInterval(() => {
+        // 非线性
         let step = (target - window.pageYOffset) / 10;
         // 支持反转动画
         step = step > 0 ? Math.ceil(step) : Math.floor(step);
+
         if (window.pageYOffset == target) {
           clearInterval(obj.timer);
+          // 有回调函数则执行
           callback && callback();
         }
         window.scroll(0, window.pageYOffset + step);
@@ -367,6 +381,7 @@ export default {
     },
   },
   watch: {
+    // 监视bannerList数据，有了后且循环遍历挂载完后
     bannerList: {
       handler(newV, oldV) {
         this.$nextTick(() => {
@@ -393,6 +408,7 @@ export default {
 
 <style scoped>
 @media screen and (max-width: 1200px) {
+  /* 响应隐藏banner区域右边工具框 */
   .banner .bannerRight {
     display: none;
   }

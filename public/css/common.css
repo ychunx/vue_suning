@@ -19,6 +19,7 @@
         width: 990px;
     }
 
+    /* 去除nav栏右部公示图片 */
     .nav div>img {
         display: none;
     }
@@ -36,6 +37,8 @@
 }
 
 @media screen and (min-width: 1256px) {
+
+    /* 响应显示右边栏 */
     .sidebar {
         background-color: #383838;
     }

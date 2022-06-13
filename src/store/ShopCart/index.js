@@ -8,6 +8,7 @@ const actions = {
             commit('GETCARTLIST', res.data)
         }
     },
+
     // 删除某个产品
     async deleteCart({ commit }, skuId) {
         let res = await reqDeleteCart(skuId)
@@ -17,6 +18,7 @@ const actions = {
             return Promise.reject(new Error('falie'))
         }
     },
+
     // 修改产品选中状态
     async updateCheck({ commit }, { skuId, isChecked }) {
         let res = await reqUpdateCheck(skuId, isChecked)
@@ -26,6 +28,7 @@ const actions = {
             return Promise.reject(new Error('falie'))
         }
     },
+
     // 修改全部产品选中状态
     changeAll({ dispatch, getters }, isChecked) {
         let promiseArr = []
@@ -35,6 +38,7 @@ const actions = {
         // 判断是否所有删除操作都成功
         return Promise.all(promiseArr)
     },
+
     // 删除选中产品
     deleteAllChecked({ dispatch, getters }) {
         let promiseArr = []

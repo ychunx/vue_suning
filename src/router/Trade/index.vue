@@ -1,9 +1,11 @@
 <template>
+  <!-- 交易订单页 -->
   <div class="main">
     <div class="tradeHeader">
       <div class="logo">
         <router-link to="/home" title="苏宁易购logo">苏宁易购</router-link>
       </div>
+      <!-- 当前进度 -->
       <div class="progress">
         <ul>
           <li>
@@ -30,6 +32,8 @@
     </div>
     <div class="tradeMain">
       <div class="tradeTitle">收货信息</div>
+
+      <!-- 地址信息 -->
       <div class="tradeAddress">
         <ul>
           <li
@@ -187,31 +191,37 @@ export default {
   name: "Trade",
   data() {
     return {
-      orderId: "",
+      orderId: "", // 交易订单号
     };
   },
   mounted() {
+    // 获取数据
     this.$store.dispatch("getUserAddress");
     this.$store.dispatch("getOrderInfo");
   },
   methods: {
+    // 选择地址（后台没有提供设置地址的接口）
     changeDefault(address, addressList) {
+      // 拍他
       addressList.forEach((item) => (item.isDefault = 0));
       address.isDefault = 1;
     },
+
+    // 提交订单
     async submitOrder() {
       let { tradeNo } = this.orderInfo;
       let data = {
-        consignee: this.currentAddress.consignee,
-        consigneeTel: this.currentAddress.phoneNum,
-        deliveryAddress: this.currentAddress.fullAddress,
-        paymentWay: "ONLINE",
-        orderComment: "none",
-        orderDetailList: this.orderInfo.detailArrayList,
+        consignee: this.currentAddress.consignee, // 姓名
+        consigneeTel: this.currentAddress.phoneNum, // 手机号码
+        deliveryAddress: this.currentAddress.fullAddress, // 地址
+        paymentWay: "ONLINE", // 支付类型
+        orderComment: "none", // 订单备注，这里默认无
+        orderDetailList: this.orderInfo.detailArrayList, // 商品信息列表
       };
       let res = await this.$API.reqSubmitOrder(tradeNo, data);
       if (res.code == 200) {
         this.orderId = res.data;
+        // 下单成功跳转支付页
         this.$router.push(`/pay?orderId=${this.orderId}`);
       } else {
         alert(res.data);
@@ -223,6 +233,8 @@ export default {
       addressList: (state) => state.Trade.addressList,
       orderInfo: (state) => state.Trade.orderInfo,
     }),
+
+    // 计算当前地址，也即是默认地址
     currentAddress() {
       return this.addressList.find((item) => item.isDefault == 0) || {};
     },

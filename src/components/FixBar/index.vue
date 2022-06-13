@@ -1,11 +1,16 @@
 <template>
+  <!-- 主页下拉到一定位置后出现的固定顶栏 -->
   <div class="fixBar" v-show="fixBarShow">
+    <!-- 居中 -->
     <div class="fixBarW">
+      <!-- 分类列表 -->
       <Nav :showOther="false" class="fixBarNav" />
+      <!-- 搜索框 -->
       <form class="search">
         <input type="search" name="" id="" v-model="keyword" />
         <button @click.prevent="goSearch">搜索</button>
       </form>
+      <!-- 右侧 -->
       <div>
         <ul>
           <li class="login">
@@ -20,7 +25,9 @@
 </template>
 
 <script>
+// 引入分类栏
 import Nav from "@/components/Nav";
+
 export default {
   name: "FixBar",
   components: {
@@ -28,8 +35,8 @@ export default {
   },
   data() {
     return {
-      fixBarShow: false,
-      keyword: "",
+      fixBarShow: false, // 控制该组件显示
+      keyword: "", // 搜索框关键字
     };
   },
   methods: {
@@ -41,7 +48,7 @@ export default {
             document.documentElement.scrollTop ||
             document.body.scrollTop
         );
-        // 滚动到600像素时顶部固定栏显示
+        // 滚动到700像素时顶部固定栏显示，否则隐藏
         if (top >= 700) {
           this.fixBarShow = true;
         } else {
@@ -49,12 +56,17 @@ export default {
         }
       }, 10);
     },
+
+    // 前往搜索页
     goSearch() {
+      // 定义参数对象用于后续路由跳转
       let location = { name: "Search" };
+      // 带上原有路径参数
       location.query = this.$route.query || {};
       location.params = { keyword: this.keyword || undefined };
+      // 更改路由
       this.$router.push(location);
-      this.keyword = "";
+      this.keyword = ""; // 清空关键字数据
     },
   },
   mounted() {

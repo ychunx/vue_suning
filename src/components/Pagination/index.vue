@@ -1,13 +1,19 @@
 <template>
+  <!-- 分页器组件 -->
   <div class="pagination">
+    <!-- 上一页 -->
     <button :disabled="pageNo == 1" @click="$emit('getPageNo', pageNo - 1)">
       &lt;
     </button>
+
+    <!-- 如果连续页码起始页数不大于1则不显示 -->
     <button v-show="continueNum.start > 1" @click="$emit('getPageNo', 1)">
       1
     </button>
+
     <button v-show="continueNum.start > 2">···</button>
 
+    <!-- 连续页码 -->
     <button
       v-for="(num, index) in continueNum.end"
       :key="index"
@@ -18,13 +24,18 @@
       {{ num }}
     </button>
 
+    <!-- 连续页码最后一页小于总页码-1才显示 -->
     <button v-show="continueNum.end < pagesSum - 1">···</button>
+
+    <!-- 最后一页页码，连续页码不包括才显示 -->
     <button
       v-show="continueNum.end < pagesSum"
       @click="$emit('getPageNo', pagesSum)"
     >
       {{ pagesSum }}
     </button>
+
+    <!-- 下一页 -->
     <button
       :disabled="pagesSum == pageNo"
       @click="$emit('getPageNo', pageNo + 1)"
@@ -49,6 +60,7 @@
 <script>
 export default {
   name: "Pagination",
+  // 接受当前页码、每页多少项、总共多少项数据、连续页码尺寸
   props: ["pageNo", "pageSize", "total", "continues"],
   data() {
     return {
@@ -66,23 +78,29 @@ export default {
     },
   },
   computed: {
+    // 根据总项数和每页项数计算页数
     pagesSum() {
       return Math.ceil(this.total / this.pageSize);
     },
+    // 获取连续始末页码
     continueNum() {
       const { continues, pageNo, pagesSum } = this;
       let start = 0,
         end = 0;
+      // 如果总页数小于连续页数
       if (continues > pagesSum) {
         start = 1;
         end = pagesSum;
       } else {
+        // 根据连续尺寸计算相对于当前页码的始末页码
         start = pageNo - parseInt(continues / 2);
         end = pageNo + parseInt(continues / 2);
+        // 保证第一页码为大于1
         if (start < 1) {
           start = 1;
           end = continues;
         }
+        // 保证页码不超过总页数
         if (end > pagesSum) {
           start = pagesSum - continues + 1;
           end = pagesSum;

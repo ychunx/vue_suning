@@ -1,5 +1,7 @@
 <template>
+  <!-- 支付页面 -->
   <div>
+    <!-- 头部 -->
     <div class="payHeader">
       <div class="w">
         <div>
@@ -11,6 +13,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 主体 -->
     <div class="payMain">
       <div class="w">
         <div class="payMainHd">
@@ -18,6 +22,7 @@
             <div>订单号：{{ orderId }}</div>
             <div>
               收款方：苏宁易购销售有限公司<a>详情</a>
+              <!-- 鼠标移到详情后展示订单的商品列表 -->
               <div class="goodsList">
                 <div>
                   <div class="goodsListHd">商品信息</div>
@@ -41,15 +46,20 @@
             订单金额 <span>{{ payInfo.totalFee }}.00</span> 元 <a>刷新</a>
           </div>
         </div>
+
         <div class="payMainBd">
+          <!-- 支付二维码 -->
           <div>
             <img :src="QRCodeUrl" />
           </div>
+
           <div class="payMainButton">
             <a @click="alert('请联系管理员')">遇见问题</a>
             <a @click="queryStatus">支付成功</a>
           </div>
         </div>
+
+        <!-- 支付成功后显示 -->
         <div class="mask" v-if="successShow">
           <div>
             <p>支付成功！</p>
@@ -57,6 +67,8 @@
             <router-link to="/home">回到首页</router-link>
           </div>
         </div>
+
+        <!-- 支付未成功用户却点击支付成功 -->
         <div class="mask" v-if="failShow">
           <div>
             <p>还未支付成功哦~</p>
@@ -65,6 +77,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 脚部 -->
     <div class="payFooter">
       <div class="w">
         <p>Copyright©2020-2022深圳市云网万店电子商务有限公司版权所有</p>
@@ -82,16 +96,20 @@ export default {
   name: "Pay",
   data() {
     return {
-      payInfo: {},
-      QRCodeUrl: "",
-      goodsList: [],
-      userInfo: {},
+      payInfo: {}, // 支付订单信息
+      QRCodeUrl: "", // 二维码图片链接
+      goodsList: [], // 订单商品信息
+      userInfo: {}, // 用户信息
+
       timer: null,
+
+      // 遮罩
       successShow: false,
       failShow: false,
     };
   },
   methods: {
+    // 获取支付订单信息
     async getPayInfo() {
       let res = await this.$API.reqPayInfo(this.orderId);
       if (res.code == 200) {
@@ -101,43 +119,57 @@ export default {
         this.getUserInfo();
       }
     },
+
+    // 获取二维码
     async getQRCode() {
       let QRCodeUrl = await QRCode.toDataURL(this.payInfo.codeUrl);
       this.QRCodeUrl = QRCodeUrl;
     },
+
+    // 获取订单商品信息
     async getGoodsInfo() {
       let res = await this.$API.reqOrderInfo();
       if (res.code == 200) {
         this.goodsList = res.data.detailArrayList;
       }
     },
+
+    // 获取用户信息
     async getUserInfo() {
       let res = await this.$API.reqUserInfo();
       if (res.code == 200) {
         this.userInfo = res.data;
       }
     },
+
+    // 手动点击支付成功，查询支付状态
     async queryStatus() {
       let res = await this.$API.reqPayStatus(this.payInfo.orderId);
-      // 开发中直通
+      // 开发下直通，上线去掉true||即可
       if (true || res.code == 200) {
+        // 支付成功
         clearInterval(this.timer);
         this.timer = true;
         this.successShow = true;
         this.failShow = false;
       } else {
+        // 支付未成功
         this.successShow = false;
         this.failShow = true;
       }
     },
   },
   computed: {
+    // 计算支付订单号
     orderId() {
       return this.$route.query.orderId;
     },
   },
   mounted() {
+    // 挂载后获取订单信息
     this.getPayInfo();
+
+    // 定时器不断查询订单支付状态
     if (!this.timer) {
       this.timer = setInterval(async () => {
         let res = await this.$API.reqPayStatus(this.payInfo.orderId);

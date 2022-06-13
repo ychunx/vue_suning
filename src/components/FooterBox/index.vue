@@ -1,6 +1,7 @@
 <template>
   <div class="footerBox">
     <div class="w">
+      <!-- 上边五个带图标 -->
       <div class="iconBoxs">
         <div class="iconBox">
           <div class="icons">
@@ -48,6 +49,7 @@
           </div>
         </div>
       </div>
+      <!-- 帮助中心 -->
       <div class="helpBoxs">
         <div class="helpBox">
           <div>

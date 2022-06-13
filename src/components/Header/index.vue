@@ -1,14 +1,18 @@
 <template>
+  <!-- 头部区域包括logo、搜索框和后加的页面右部固定栏 -->
   <header class="header w">
+    <!-- logo -->
     <div class="logo">
       <h1>
         <router-link to="/home" title="苏宁易购logo">苏宁易购</router-link>
       </h1>
     </div>
+    <!-- 搜索框 -->
     <form class="search">
       <input type="search" name="" id="" v-model="keyword" />
       <button @click.prevent="goSearch">搜索</button>
     </form>
+    <!-- 搜索框下热门关键字 -->
     <div class="hotwords">
       <a href="">手机</a>
       <a href="" class="style_ora">爆款洗衣机</a>
@@ -36,19 +40,23 @@ export default {
   name: "Header",
   data() {
     return {
-      keyword: "",
-      isShopCart: true,
-      shopCartNum: 0,
+      keyword: "", // 搜索栏关键字
+      isShopCart: true, // 控制右边栏显示（购物车页面会用到该组件，但不显示右边栏，理应拆分为两个组件的）
+      shopCartNum: 0, // 显示当前购物车商品数
     };
   },
   methods: {
+    // 前往搜索页
     goSearch() {
       let location = { name: "Search" };
+      // 带上原本路径参数
       location.query = this.$route.query || {};
       location.params = { keyword: this.keyword || undefined };
+      // 跳转路由
       this.$router.push(location);
-      this.keyword = "";
+      this.keyword = ""; // 清空搜索框
     },
+    // 前往购物车
     goShopCart() {
       this.$router.push("/shopcart");
     },
@@ -56,12 +64,13 @@ export default {
   watch: {
     // 控制右固定栏在购物车页面不显示
     $route(newv, oldv) {
+      // 如果为购物车页面则不显示
       if (this.$route.path == "/shopcart") {
         this.isShopCart = false;
       } else {
         this.isShopCart = true;
       }
-      // 每当路由跳转时刷新购物车数量
+      // 每当路由跳转时刷新购物车商品数量
       this.shopCartNum = this.cartList.cartInfoList
         ? this.cartList.cartInfoList.length
         : 0;
@@ -71,7 +80,7 @@ export default {
     ...mapGetters(["cartList"]),
   },
   mounted() {
-    // 等获取到购物车数据后再计算数量
+    // 等获取到购物车数据后再计算数量（可以watch监视cartInfoList数据比较好）
     setTimeout(() => {
       this.shopCartNum = this.cartList.cartInfoList
         ? this.cartList.cartInfoList.length

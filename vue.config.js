@@ -5,6 +5,7 @@ module.exports = defineConfig({
   productionSourceMap: false,//去除Map文件
 
   devServer: {
+    // 代理服务器
     proxy: {
       '/api': {
         target: 'http://gmall-h5-api.atguigu.cn',
@@ -14,5 +15,6 @@ module.exports = defineConfig({
   },
 
   publicPath: './',
+  // 打包输出文件夹名
   outputDir: 'docs',
 })

@@ -1,5 +1,7 @@
 <template>
+  <!-- 属性 -->
   <div class="clearfix selector">
+    <!-- 品牌 -->
     <div class="type-wrap logo">
       <div class="fl key brand">品牌</div>
       <div class="value logos">
@@ -14,6 +16,8 @@
         <a>更多</a>
       </div>
     </div>
+
+    <!-- 属性 -->
     <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
       <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
@@ -40,9 +44,12 @@ export default {
     ...mapGetters(["trademarkList", "attrsList"]),
   },
   methods: {
+    // 添加品牌筛选
     tmClick(tm) {
       this.$emit("tmInfo", tm);
     },
+
+    // 添加属性筛选
     attrClick(attr, v) {
       this.$emit("attrInfo", attr, v);
     },

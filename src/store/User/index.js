@@ -1,4 +1,5 @@
 import { reqCode, reqRegister, reqLogin, reqUserInfo, reqLogout } from "@/api"
+// 引入token增删查工具
 import { setToken, getToken, removeToken } from "@/utils/token"
 
 const actions = {
@@ -9,6 +10,7 @@ const actions = {
             commit('GETCODE', res.data)
         }
     },
+
     // 注册
     async register({ commit }, data) {
         let res = await reqRegister(data)
@@ -18,6 +20,7 @@ const actions = {
             return Promise.reject(new Error('falie'))
         }
     },
+
     // 登录
     async login({ commit }, data) {
         let res = await reqLogin(data)
@@ -29,6 +32,7 @@ const actions = {
             return Promise.reject(new Error('falie'))
         }
     },
+
     // 获取已登录的用户信息
     async getUserInfo({ commit }) {
         let res = await reqUserInfo()
@@ -39,6 +43,7 @@ const actions = {
             return Promise.reject(new Error('falie'))
         }
     },
+
     // 退出登录
     async logout({ commit }) {
         let res = await reqLogout()
